@@ -3,12 +3,13 @@
   "subtitle": "Fortnightly intelligence for automotive distribution — Middle East and Europe",
   "audience_note": "Prepared for corporate strategy and senior leadership.",
   "ai_notice": "Items are screened from named public sources and summarised with AI assistance. The \"Initial view\" line is a first read intended to open discussion, not a settled position or a recommendation to act.",
+  "impact_coherence": "Impact and action must agree. A high-impact item cannot sit at Unreviewed or No action — if nothing is being done about it, it is not high impact.",
   "impact_criteria": {
-    "high": "Changes a decision we would otherwise take, or moves volume or gross profit in a market we actually sell in, within 12 months. Rare by design, and capped at three per edition. A high rating should always carry an action of Deep dive, Act or Escalate — high impact with nothing to do about it is a rating that measures nothing.",
-    "medium": "Affects our economics or competitive position, but forces no decision this cycle. Registration data and directional policy signals normally sit here: they inform planning rather than compelling a response.",
-    "low": "Context. Logged for the record so the screening trail is complete."
+    "high": "Changes a decision we would otherwise take, or moves volume or gross profit in a market we sell in, within 12 months. Rare by design, and capped at three items per edition.",
+    "medium": "Informs planning or revises our read of a market, but forces no decision this cycle. Registration data and directional policy signals normally sit here.",
+    "low": "Context. Logged for the record."
   },
-  "filter_note": "Countries and regional jurisdictions (EU, GCC, UNECE) are filterable; source markets such as China and Japan appear as tags only, since they are where decisions get made rather than markets we sell into.",
+  "filter_note": "Countries and regional jurisdictions such as the EU and GCC are filterable; source markets — China, Japan, South Korea — appear as tags only, since they are where decisions are made rather than markets we distribute into.",
   "areas": {
     "regulation_trade": {
       "name": "Regulation & Trade",
@@ -137,7 +138,7 @@
           "id": "e3-03",
           "headline": "EU car market up 5.7% in H1 2026 as battery-electric share reaches 20.7%",
           "summary": "ACEA reported 5.90 million new EU car registrations in the first half of 2026, up 5.7%. Battery-electric cars took 20.7% share against 15.6% a year earlier, hybrids 37.3% and plug-in hybrids 9.8%, while the combined petrol and diesel share fell to 29.7% from 37.8%.",
-          "initial_view": "Sets the powertrain mix our European franchises will be supplying into. Petrol and diesel losing eight points of share in twelve months is the figure worth carrying into stock, specification and residual-value planning.",
+          "initial_view": "Sets the powertrain mix our European franchises must supply into. Petrol and diesel losing eight points of share in twelve months is the figure that bears on stock, specification and residual-value planning.",
           "is_top": true,
           "top_rank": 3,
           "area": "competition_brand",
@@ -147,7 +148,7 @@
           "source_name": "ACEA",
           "source_url": "https://www.acea.auto/pc-registrations/new-car-registrations-5-7-in-h1-2026-battery-electric-20-7-market-share/",
           "source_date": "2026-07-23",
-          "seed_action": null
+          "seed_action": "monitor"
         },
         {
           "id": "e3-01",
@@ -211,7 +212,7 @@
           "source_name": "Automotive Management",
           "source_url": "https://www.am-online.com/news/farizon-adds-sport-version-to-sv-electric-van-range",
           "source_date": "2026-07-16",
-          "seed_action": "no_action"
+          "seed_action": null
         }
       ]
     }
