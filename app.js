@@ -15,11 +15,6 @@
 
   var dom = {};
 
-  /* Live registry of action controls on screen. A top item is drawn twice —
-     once in the top block, once in the feed — so both copies must be kept in
-     step when either one changes. Rebuilt on every render. */
-  var cards = [];
-
   /* ---------- helpers ---------- */
 
   function el(tag, className, text) {
@@ -113,16 +108,6 @@
     });
   }
 
-  /* Push a new value to every other on-screen copy of the same item, and
-     refresh each copy's coherence flag. */
-  function syncItem(itemId, value, origin) {
-    cards.forEach(function (entry) {
-      if (entry.itemId !== itemId) { return; }
-      if (entry.select !== origin) { entry.select.value = value; }
-      entry.sync();
-    });
-  }
-
   /* ---------- selects ---------- */
 
   function buildEditionSelect() {
@@ -206,9 +191,7 @@
 
   /* ---------- cards ---------- */
 
-  /* context distinguishes the two possible copies of an item, so the
-     select ids stay unique and each label binds to its own control. */
-  function buildCard(item, showRank, context) {
+  function buildCard(item, showRank) {
     var card = el('article', 'card' + (item.is_top ? ' is-top' : ''));
 
     if (showRank && item.is_top && item.top_rank) {
@@ -217,14 +200,14 @@
 
     card.appendChild(el('h3', null, item.headline));
 
-    card.appendChild(el('p', 'summary', item.summary));
-
     var iv = el('div', 'iv');
     var ivLabel = el('span', 'iv-label', 'Initial view');
     ivLabel.title = 'A first read for discussion, not a settled position or a recommendation to act.';
     iv.appendChild(ivLabel);
     iv.appendChild(el('p', null, item.initial_view));
     card.appendChild(iv);
+
+    card.appendChild(el('p', 'summary', item.summary));
 
     var badges = el('div', 'badges');
 
@@ -262,51 +245,33 @@
     link.rel = 'noopener noreferrer';
     src.appendChild(link);
     src.appendChild(document.createTextNode(' · '));
-    src.appendChild(el('span', 'mono', item.source_date));
+    var date = el('span', 'mono', item.source_date);
+    src.appendChild(date);
     foot.appendChild(src);
 
     var field = el('div', 'action-field');
-    var selectId = 'action-' + (context || 'x') + '-' + item.id;
+    var selectId = 'action-' + item.id;
     var label = el('label', null, 'Proposed action');
     label.setAttribute('for', selectId);
     field.appendChild(label);
 
     var select = document.createElement('select');
     select.id = selectId;
-    select.setAttribute('data-item-id', item.id);
     Object.keys(state.data.actions).forEach(function (slug) {
       var opt = el('option', null, actionLabel(slug));
       opt.value = slug;
       select.appendChild(opt);
     });
     select.value = actionFor(item);
+    select.addEventListener('change', function () {
+      state.actions[item.id] = select.value;
+      writeStorage();
+      renderExportState();
+    });
     field.appendChild(select);
     foot.appendChild(field);
 
     card.appendChild(foot);
-
-    var flag = el('p', 'coherence-flag');
-    flag.hidden = true;
-    function syncFlag() {
-      var clash = item.impact === 'high' &&
-        (select.value === 'unreviewed' || select.value === 'no_action');
-      flag.textContent = clash
-        ? 'High impact with no work assigned — review this rating or the action.'
-        : '';
-      flag.hidden = !clash;
-    }
-    syncFlag();
-    card.appendChild(flag);
-
-    select.addEventListener('change', function () {
-      state.actions[item.id] = select.value;
-      writeStorage();
-      syncItem(item.id, select.value, select);
-      renderExportState();
-    });
-
-    cards.push({ itemId: item.id, select: select, sync: syncFlag });
-
     return card;
   }
 
@@ -361,7 +326,7 @@
     dom.topHead.appendChild(el('span', 'mono', 'Ranked by editorial judgment'));
 
     sortItems(tops).forEach(function (item) {
-      dom.topBody.appendChild(buildCard(item, true, 'top'));
+      dom.topBody.appendChild(buildCard(item, true));
     });
   }
 
@@ -399,20 +364,16 @@
     }
 
     shown.forEach(function (item) {
-      dom.feedBody.appendChild(buildCard(item, true, 'feed'));
+      dom.feedBody.appendChild(buildCard(item, true));
     });
   }
 
-  /* Re-asserted from state rather than blanked, so the storage warning is not
-     lost the first time someone touches a dropdown. */
   function renderExportState() {
     dom.resetBtn.disabled = !filterActive();
-    dom.exportStatus.textContent = state.persistent ? '' :
-      'Browser storage is unavailable, so action choices will not survive a refresh.';
+    dom.exportStatus.textContent = '';
   }
 
   function render() {
-    cards = [];
     renderMasthead();
     buildAreaSelect();
     buildMarketSelect();
@@ -432,9 +393,6 @@
   /* ---------- panels ---------- */
 
   function renderPanels() {
-    if (state.data.filter_note) {
-      dom.areaDefs.appendChild(el('p', 'note-lead', state.data.filter_note));
-    }
     var defs = el('dl', 'defs');
     Object.keys(state.data.areas).forEach(function (slug) {
       defs.appendChild(el('dt', null, areaMeta(slug).name));
@@ -442,9 +400,6 @@
     });
     dom.areaDefs.appendChild(defs);
 
-    if (state.data.impact_coherence) {
-      dom.impactDefs.appendChild(el('p', 'note-lead', state.data.impact_coherence));
-    }
     var crit = el('dl', 'defs');
     var criteria = state.data.impact_criteria || {};
     ['high', 'medium', 'low'].forEach(function (key) {
@@ -453,6 +408,8 @@
       crit.appendChild(el('dd', null, criteria[key]));
     });
     dom.impactDefs.appendChild(crit);
+
+    dom.filterDefs.appendChild(el('p', null, state.data.filter_note));
 
     dom.aiNotice.textContent = state.data.ai_notice;
   }
@@ -523,7 +480,7 @@
       'editionFlag', 'editionLabel', 'publishedDate', 'editorNote', 'aiNotice',
       'editionSelect', 'areaSelect', 'marketSelect', 'resetBtn', 'exportBtn',
       'exportStatus', 'count', 'topSection', 'topHead', 'topBody', 'feedBody',
-      'areaDefs', 'impactDefs', 'error'
+      'areaDefs', 'impactDefs', 'filterDefs', 'error'
     ].forEach(function (id) {
       dom[id] = document.getElementById(id);
     });
@@ -562,15 +519,19 @@
     state.editionId = data.editions[data.editions.length - 1].id;
 
     document.title = data.publication;
-    dom.pubName = document.getElementById('pubName');
-    dom.pubSubtitle = document.getElementById('pubSubtitle');
-    if (dom.pubName) { dom.pubName.textContent = data.publication; }
-    if (dom.pubSubtitle) { dom.pubSubtitle.textContent = data.subtitle; }
+    document.getElementById('pubName').textContent = data.publication;
+    document.getElementById('pubSubtitle').textContent = data.subtitle;
 
+    cacheDom();
     renderPanels();
     buildEditionSelect();
     wire();
     render();
+
+    if (!state.persistent) {
+      dom.exportStatus.textContent =
+        'Browser storage is unavailable, so action choices will not survive a refresh.';
+    }
   }
 
   document.addEventListener('DOMContentLoaded', function () {
