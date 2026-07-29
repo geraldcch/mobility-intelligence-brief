@@ -3,6 +3,7 @@
 
   var STORAGE_KEY = 'mib.actions.v1';
   var IMPACT_ORDER = { high: 0, medium: 1, low: 2 };
+  var WEAK_ACTIONS = { unreviewed: 1, no_action: 1 };
 
   var state = {
     data: null,
@@ -47,8 +48,7 @@
   }
 
   function areaMeta(slug) {
-    return (state.data.areas && state.data.areas[slug]) ||
-      { name: slug, definition: '' };
+    return (state.data.areas && state.data.areas[slug]) || { name: slug, definition: '' };
   }
 
   function marketMeta(code) {
@@ -89,8 +89,7 @@
   function matches(item) {
     if (state.area !== 'all' && item.area !== state.area) { return false; }
     if (state.market !== 'all') {
-      var list = item.markets || [];
-      if (list.indexOf(state.market) === -1) { return false; }
+      if ((item.markets || []).indexOf(state.market) === -1) { return false; }
     }
     return true;
   }
@@ -116,8 +115,7 @@
     state.data.editions.forEach(function (ed) {
       var count = (ed.items || []).length;
       var suffix = count ? '' : ' — no items';
-      var opt = el('option', null,
-        'Edition ' + ed.number + ' · ' + ed.label + suffix);
+      var opt = el('option', null, 'Edition ' + ed.number + ' · ' + ed.label + suffix);
       opt.value = ed.id;
       sel.appendChild(opt);
     });
@@ -130,9 +128,7 @@
     var sel = dom.areaSelect;
     var items = editionItems();
     var counts = {};
-    items.forEach(function (it) {
-      counts[it.area] = (counts[it.area] || 0) + 1;
-    });
+    items.forEach(function (it) { counts[it.area] = (counts[it.area] || 0) + 1; });
 
     clear(sel);
     var all = el('option', null, 'All areas (' + items.length + ')');
@@ -189,6 +185,20 @@
     sel.value = state.market;
   }
 
+  /* ---------- impact / action coherence ---------- */
+
+  function coherenceMessage(item, action) {
+    if (item.impact === 'high' && WEAK_ACTIONS[action]) {
+      return 'Rated high impact but carrying no work. Either the rating is too ' +
+        'high or this needs a deep dive.';
+    }
+    if (item.impact === 'low' && action === 'escalate') {
+      return 'Rated low impact but escalated. Worth re-rating if this really ' +
+        'needs leadership time.';
+    }
+    return '';
+  }
+
   /* ---------- cards ---------- */
 
   function buildCard(item, showRank) {
@@ -200,6 +210,9 @@
 
     card.appendChild(el('h3', null, item.headline));
 
+    /* What happened, before what it might mean. */
+    card.appendChild(el('p', 'summary', item.summary));
+
     var iv = el('div', 'iv');
     var ivLabel = el('span', 'iv-label', 'Initial view');
     ivLabel.title = 'A first read for discussion, not a settled position or a recommendation to act.';
@@ -207,16 +220,13 @@
     iv.appendChild(el('p', null, item.initial_view));
     card.appendChild(iv);
 
-    card.appendChild(el('p', 'summary', item.summary));
-
     var badges = el('div', 'badges');
 
     var area = el('span', 'badge badge-area', areaMeta(item.area).name);
     area.title = areaMeta(item.area).definition;
     badges.appendChild(area);
 
-    var impact = el('span', 'badge badge-impact ' + item.impact,
-      item.impact + ' impact');
+    var impact = el('span', 'badge badge-impact ' + item.impact, item.impact + ' impact');
     impact.title = (state.data.impact_criteria || {})[item.impact] || '';
     badges.appendChild(impact);
 
@@ -245,8 +255,7 @@
     link.rel = 'noopener noreferrer';
     src.appendChild(link);
     src.appendChild(document.createTextNode(' · '));
-    var date = el('span', 'mono', item.source_date);
-    src.appendChild(date);
+    src.appendChild(el('span', 'mono', item.source_date));
     foot.appendChild(src);
 
     var field = el('div', 'action-field');
@@ -263,14 +272,28 @@
       select.appendChild(opt);
     });
     select.value = actionFor(item);
+    field.appendChild(select);
+
+    var flag = el('p', 'coherence');
+    flag.id = 'coherence-' + item.id;
+    flag.setAttribute('role', 'status');
+    field.appendChild(flag);
+
+    function syncFlag() {
+      var msg = coherenceMessage(item, select.value);
+      flag.textContent = msg;
+      flag.hidden = !msg;
+    }
+    syncFlag();
+
     select.addEventListener('change', function () {
       state.actions[item.id] = select.value;
       writeStorage();
-      renderExportState();
+      syncFlag();
+      dom.exportStatus.textContent = '';
     });
-    field.appendChild(select);
-    foot.appendChild(field);
 
+    foot.appendChild(field);
     card.appendChild(foot);
     return card;
   }
@@ -293,17 +316,16 @@
   }
 
   function renderTop() {
-    var section = dom.topSection;
     clear(dom.topBody);
     clear(dom.topHead);
 
     var tops = editionItems().filter(function (it) { return it.is_top; });
 
     if (!tops.length) {
-      section.hidden = true;
+      dom.topSection.hidden = true;
       return;
     }
-    section.hidden = false;
+    dom.topSection.hidden = false;
 
     if (filterActive()) {
       dom.topHead.appendChild(el('h2', null, 'Top items'));
@@ -344,7 +366,7 @@
       shell.appendChild(el('strong', null, 'This archive edition has no items yet'));
       shell.appendChild(el('p', null,
         'The window and label are recorded so the archive reads continuously. ' +
-        'Use the edition selector above to return to the current edition.'));
+        'Use the edition selector in the masthead to return to the current edition.'));
       dom.feedBody.appendChild(shell);
       return;
     }
@@ -368,18 +390,14 @@
     });
   }
 
-  function renderExportState() {
-    dom.resetBtn.disabled = !filterActive();
-    dom.exportStatus.textContent = '';
-  }
-
   function render() {
     renderMasthead();
     buildAreaSelect();
     buildMarketSelect();
     renderTop();
     renderFeed();
-    renderExportState();
+    dom.resetBtn.disabled = !filterActive();
+    dom.exportStatus.textContent = '';
   }
 
   function resetFilters() {
@@ -399,6 +417,9 @@
       defs.appendChild(el('dd', null, areaMeta(slug).definition));
     });
     dom.areaDefs.appendChild(defs);
+    if (state.data.filter_note) {
+      dom.areaDefs.appendChild(el('p', 'panel-tail', state.data.filter_note));
+    }
 
     var crit = el('dl', 'defs');
     var criteria = state.data.impact_criteria || {};
@@ -408,8 +429,6 @@
       crit.appendChild(el('dd', null, criteria[key]));
     });
     dom.impactDefs.appendChild(crit);
-
-    dom.filterDefs.appendChild(el('p', null, state.data.filter_note));
 
     dom.aiNotice.textContent = state.data.ai_notice;
   }
@@ -433,19 +452,12 @@
         var action = actionFor(item);
         if (action === 'unreviewed') { return; }
         rows.push([
-          ed.number,
-          ed.label,
-          item.id,
-          item.headline,
+          ed.number, ed.label, item.id, item.headline,
           areaMeta(item.area).name,
           (item.markets || []).map(function (c) { return marketMeta(c).name; }).join('; '),
           (item.brands || []).join('; '),
-          item.impact,
-          actionLabel(action),
-          item.source_name,
-          item.source_date,
-          item.source_url,
-          item.initial_view
+          item.impact, actionLabel(action),
+          item.source_name, item.source_date, item.source_url, item.initial_view
         ]);
       });
     });
@@ -480,7 +492,7 @@
       'editionFlag', 'editionLabel', 'publishedDate', 'editorNote', 'aiNotice',
       'editionSelect', 'areaSelect', 'marketSelect', 'resetBtn', 'exportBtn',
       'exportStatus', 'count', 'topSection', 'topHead', 'topBody', 'feedBody',
-      'areaDefs', 'impactDefs', 'filterDefs', 'error'
+      'areaDefs', 'impactDefs', 'error'
     ].forEach(function (id) {
       dom[id] = document.getElementById(id);
     });
