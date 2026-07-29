@@ -4,23 +4,73 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Mobility Intelligence Brief</title>
-<style>
-  body { font-family: Georgia, "Times New Roman", serif; max-width: 46rem;
-         margin: 4rem auto; padding: 0 1.25rem; color: #1a1a1a; line-height: 1.5; }
-  h1 { font-size: 1.75rem; margin: 0 0 .25rem; letter-spacing: -.01em; }
-  .rule { border-top: 2px solid #1a1a1a; margin: .75rem 0 1rem; }
-  .meta { font-family: -apple-system, system-ui, sans-serif;
-          font-size: .8rem; text-transform: uppercase; letter-spacing: .08em; color: #666; }
-</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <header>
-    <h1>Mobility Intelligence Brief</h1>
-    <div class="meta">Fortnightly · Middle East &amp; Europe</div>
-    <div class="rule"></div>
-  </header>
-  <main>
-    <p class="meta">Deployment test — build in progress.</p>
-  </main>
+
+<header class="masthead">
+  <div class="mh-row">
+    <div class="mh-title">
+      <h1 id="pubName">Mobility Intelligence Brief</h1>
+      <p class="mh-sub" id="pubSub">Fortnightly intelligence for Abdul Latif Jameel — Middle East &amp; Europe</p>
+    </div>
+    <div class="mh-ed">
+      <label for="editionSelect">Edition</label>
+      <select id="editionSelect"></select>
+    </div>
+  </div>
+  <div class="mh-rule"></div>
+  <p class="mh-meta" id="editionMeta">Loading…</p>
+  <p class="mh-note" id="editorNote" hidden></p>
+</header>
+
+<section class="filters" aria-label="Filter the edition">
+  <div class="f-controls">
+    <div class="f-group">
+      <label for="marketSelect">Country or jurisdiction</label>
+      <select id="marketSelect"></select>
+    </div>
+    <div class="f-group">
+      <label for="areaSelect">Area of interest</label>
+      <select id="areaSelect"></select>
+    </div>
+    <div class="f-buttons">
+      <button type="button" id="clearBtn">Clear filters</button>
+      <button type="button" id="exportBtn">Export triage list</button>
+    </div>
+  </div>
+  <p class="f-note">Supranational jurisdictions and source markets are filterable as first-class entities, because the items that matter most to a distributor are frequently not national.</p>
+</section>
+
+<main>
+  <p class="loaderr" id="loadError" hidden></p>
+
+  <section id="topSection" hidden>
+    <div class="s-head">
+      <h2 id="topHeading">Top items</h2>
+      <p class="s-desc">Ranked by consequence for the business. If nothing else is read, this is what is read.</p>
+    </div>
+    <div class="list" id="topList"></div>
+  </section>
+
+  <section id="feedSection">
+    <div class="s-head">
+      <h2 id="feedHeading">Full feed</h2>
+      <p class="s-desc" id="feedDesc">All items in this edition, filterable by jurisdiction and area of interest.</p>
+    </div>
+    <div class="list" id="feedList"></div>
+    <p class="empty" id="emptyState" hidden></p>
+  </section>
+</main>
+
+<footer>
+  <p><strong>How this is produced.</strong> Each edition is compiled manually: items are screened against a stated inclusion rule, verified against a named primary source, and written with an explicit implication for the business. This is an editorial product on a fortnightly cadence, not an automated news feed.</p>
+  <p class="f-small">Triage selections are stored in this browser only and are not shared between users. Use <em>Export triage list</em> to take them elsewhere.</p>
+</footer>
+
+<script src="app.js"></script>
 </body>
 </html>
