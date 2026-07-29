@@ -38,14 +38,22 @@
 
   <section aria-label="Filters and export">
     <div class="toolbar">
-      <div class="field">
-        <label for="areaSelect">Area of interest</label>
-        <select id="areaSelect"></select>
-      </div>
-      <div class="field">
-        <label for="marketSelect">Country or jurisdiction</label>
-        <select id="marketSelect"></select>
-      </div>
+      <details class="facet" id="areaFacet">
+        <summary>
+          <span>Area of interest</span>
+          <span class="facet-count" id="areaCount">All</span>
+        </summary>
+        <fieldset id="areaFieldset"></fieldset>
+      </details>
+
+      <details class="facet" id="marketFacet">
+        <summary>
+          <span>Country or jurisdiction</span>
+          <span class="facet-count" id="marketCount">All</span>
+        </summary>
+        <fieldset id="marketFieldset"></fieldset>
+      </details>
+
       <div class="btn-row">
         <button type="button" class="btn" id="resetBtn">Reset filters</button>
         <button type="button" class="btn btn-primary" id="exportBtn">Export triage (CSV)</button>
