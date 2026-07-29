@@ -466,21 +466,27 @@
     var tops = all.filter(function (it) { return it.is_top; });
     // While the top block is visible those items are already on screen, so the
     // feed carries the remainder. Under a filter the top block is hidden and
-    // the feed carries everything.
+    // the feed carries everything. An edition with no ranked items also puts
+    // everything in the feed.
     var pool = (filterActive() || !tops.length)
       ? all
       : all.filter(function (it) { return !it.is_top; });
     var shown = sortItems(pool.filter(matches));
-    dom.feedHeading.textContent = filterActive() ? 'Filtered results' : 'Remaining items';
+
+    dom.feedHeading.textContent = filterActive()
+      ? 'Filtered results'
+      : (tops.length ? 'Remaining items' : 'All items');
 
     if (!all.length) {
       dom.count.textContent = 'No items in this edition';
     } else if (filterActive()) {
       dom.count.textContent = 'Showing ' + shown.length + ' of ' + all.length +
         ' items in this edition';
-    } else {
+    } else if (tops.length) {
       dom.count.textContent = all.length + ' items in this edition, ' +
         tops.length + ' ranked above';
+    } else {
+      dom.count.textContent = all.length + ' items in this edition';
     }
 
     if (!all.length) {
@@ -632,7 +638,7 @@
       'areaFacet', 'areaFieldset', 'areaSummary',
       'marketFacet', 'marketFieldset', 'marketSummary',
       'resetBtn', 'exportBtn', 'exportStatus', 'count',
-      'topSection', 'topHead', 'topBody', 'feedBody',
+      'topSection', 'topHead', 'topBody', 'feedHeading', 'feedBody',
       'areaDefs', 'impactDefs', 'error'
     ].forEach(function (id) {
       dom[id] = document.getElementById(id);
@@ -691,11 +697,6 @@
     buildEditionSelect();
     wire();
     render();
-
-    if (!state.persistent) {
-      dom.exportStatus.textContent =
-        'Browser storage is unavailable, so action choices will not survive a refresh.';
-    }
   }
 
   document.addEventListener('DOMContentLoaded', function () {
