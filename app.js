@@ -134,7 +134,7 @@
   function buildEditionSelect() {
     var sel = dom.editionSelect;
     clear(sel);
-    state.data.editions.forEach(function (ed) {
+    state.data.editions.slice().reverse().forEach(function (ed) {
       var count = (ed.items || []).length;
       var suffix = count ? '' : ' — no items';
       var opt = el('option', null,
@@ -463,11 +463,24 @@
   function renderFeed() {
     clear(dom.feedBody);
     var all = editionItems();
-    var shown = sortItems(all.filter(matches));
+    var tops = all.filter(function (it) { return it.is_top; });
+    // While the top block is visible those items are already on screen, so the
+    // feed carries the remainder. Under a filter the top block is hidden and
+    // the feed carries everything.
+    var pool = (filterActive() || !tops.length)
+      ? all
+      : all.filter(function (it) { return !it.is_top; });
+    var shown = sortItems(pool.filter(matches));
 
-    dom.count.textContent = all.length
-      ? 'Showing ' + shown.length + ' of ' + all.length + ' items in this edition'
-      : 'No items in this edition';
+    if (!all.length) {
+      dom.count.textContent = 'No items in this edition';
+    } else if (filterActive()) {
+      dom.count.textContent = 'Showing ' + shown.length + ' of ' + all.length +
+        ' items in this edition';
+    } else {
+      dom.count.textContent = all.length + ' items in this edition, ' +
+        tops.length + ' ranked above';
+    }
 
     if (!all.length) {
       var shell = el('div', 'empty');
@@ -501,7 +514,9 @@
 
   function renderExportState() {
     dom.resetBtn.disabled = !filterActive();
-    dom.exportStatus.textContent = '';
+    dom.exportStatus.textContent = state.persistent
+      ? ''
+      : 'Browser storage is unavailable, so action choices will not survive a refresh.';
   }
 
   function render() {
