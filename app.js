@@ -7,8 +7,8 @@
   var state = {
     data: null,
     editionId: null,
-    area: 'all',
-    market: 'all',
+    areas: [],
+    markets: [],
     actions: {},
     persistent: true
   };
@@ -82,15 +82,23 @@
     return (ed && ed.items) ? ed.items : [];
   }
 
+  /* An empty selection array means "all", so no filter is active. */
   function filterActive() {
-    return state.area !== 'all' || state.market !== 'all';
+    return state.areas.length > 0 || state.markets.length > 0;
   }
 
+  /* OR within a facet, AND across facets. */
   function matches(item) {
-    if (state.area !== 'all' && item.area !== state.area) { return false; }
-    if (state.market !== 'all') {
+    if (state.areas.length && state.areas.indexOf(item.area) === -1) {
+      return false;
+    }
+    if (state.markets.length) {
       var list = item.markets || [];
-      if (list.indexOf(state.market) === -1) { return false; }
+      var hit = false;
+      for (var i = 0; i < state.markets.length; i++) {
+        if (list.indexOf(state.markets[i]) !== -1) { hit = true; break; }
+      }
+      if (!hit) { return false; }
     }
     return true;
   }
@@ -121,7 +129,7 @@
     });
   }
 
-  /* ---------- selects ---------- */
+  /* ---------- edition selector ---------- */
 
   function buildEditionSelect() {
     var sel = dom.editionSelect;
@@ -137,34 +145,86 @@
     sel.value = state.editionId;
   }
 
-  /* Options are built from the selected edition only, with counts, so a
-     dropdown never offers a value that returns nothing on its own. */
-  function buildAreaSelect() {
-    var sel = dom.areaSelect;
+  /* ---------- filter facets ---------- */
+
+  function facetRow(name, value, labelText, count, checked, isAll, onChange) {
+    var row = el('label', 'facet-row' + (isAll ? ' is-all' : ''));
+    var box = document.createElement('input');
+    box.type = 'checkbox';
+    box.name = name;
+    box.value = value;
+    box.checked = checked;
+    box.addEventListener('change', function () { onChange(value, box.checked); });
+    row.appendChild(box);
+    row.appendChild(el('span', null, labelText));
+    if (count !== null) { row.appendChild(el('span', 'n', '(' + count + ')')); }
+    return row;
+  }
+
+  function setFacetCount(node, selected, total) {
+    node.textContent = selected.length
+      ? selected.length + ' of ' + total
+      : 'All';
+  }
+
+  function toggleArea(value, on) {
+    if (value === '__all__') {
+      state.areas = [];
+    } else if (on) {
+      if (state.areas.indexOf(value) === -1) { state.areas.push(value); }
+    } else {
+      state.areas = state.areas.filter(function (v) { return v !== value; });
+    }
+    render();
+  }
+
+  function toggleMarket(value, on) {
+    if (value === '__all__') {
+      state.markets = [];
+    } else if (on) {
+      if (state.markets.indexOf(value) === -1) { state.markets.push(value); }
+    } else {
+      state.markets = state.markets.filter(function (v) { return v !== value; });
+    }
+    render();
+  }
+
+  /* Options come from the selected edition only, with counts, so a facet
+     never offers a value that would return nothing on its own. */
+  function buildAreaFacet() {
+    var fs = dom.areaFieldset;
     var items = editionItems();
     var counts = {};
     items.forEach(function (it) {
       counts[it.area] = (counts[it.area] || 0) + 1;
     });
 
-    clear(sel);
-    var all = el('option', null, 'All areas (' + items.length + ')');
-    all.value = 'all';
-    sel.appendChild(all);
+    state.areas = state.areas.filter(function (slug) { return counts[slug]; });
 
-    Object.keys(state.data.areas).forEach(function (slug) {
-      if (!counts[slug]) { return; }
-      var opt = el('option', null, areaMeta(slug).name + ' (' + counts[slug] + ')');
-      opt.value = slug;
-      sel.appendChild(opt);
+    clear(fs);
+    var legend = el('legend', 'sr-only', 'Filter by area of interest');
+    fs.appendChild(legend);
+
+    fs.appendChild(facetRow('area', '__all__', 'All areas', items.length,
+      state.areas.length === 0, true, toggleArea));
+
+    var available = Object.keys(state.data.areas).filter(function (slug) {
+      return counts[slug];
     });
 
-    if (state.area !== 'all' && !counts[state.area]) { state.area = 'all'; }
-    sel.value = state.area;
+    available.forEach(function (slug) {
+      fs.appendChild(facetRow('area', slug, areaMeta(slug).name, counts[slug],
+        state.areas.indexOf(slug) !== -1, false, toggleArea));
+    });
+
+    fs.appendChild(el('p', 'facet-logic',
+      'Selecting more than one area shows items in any of them.'));
+
+    setFacetCount(dom.areaCount, state.areas, available.length);
   }
 
-  function buildMarketSelect() {
-    var sel = dom.marketSelect;
+  function buildMarketFacet() {
+    var fs = dom.marketFieldset;
     var items = editionItems();
     var counts = {};
     items.forEach(function (it) {
@@ -174,10 +234,15 @@
       });
     });
 
-    clear(sel);
-    var all = el('option', null, 'All jurisdictions (' + items.length + ')');
-    all.value = 'all';
-    sel.appendChild(all);
+    state.markets = state.markets.filter(function (code) { return counts[code]; });
+
+    clear(fs);
+    fs.appendChild(el('legend', 'sr-only', 'Filter by country or jurisdiction'));
+
+    fs.appendChild(facetRow('market', '__all__', 'All jurisdictions', items.length,
+      state.markets.length === 0, true, toggleMarket));
+
+    var total = 0;
 
     (state.data.market_groups || []).forEach(function (group) {
       var codes = Object.keys(state.data.markets).filter(function (code) {
@@ -188,18 +253,19 @@
       codes.sort(function (a, b) {
         return marketMeta(a).name.localeCompare(marketMeta(b).name);
       });
-      var grp = document.createElement('optgroup');
-      grp.label = group;
+      fs.appendChild(el('p', 'facet-group', group));
       codes.forEach(function (code) {
-        var opt = el('option', null, marketMeta(code).name + ' (' + counts[code] + ')');
-        opt.value = code;
-        grp.appendChild(opt);
+        total += 1;
+        fs.appendChild(facetRow('market', code, marketMeta(code).name, counts[code],
+          state.markets.indexOf(code) !== -1, false, toggleMarket));
       });
-      sel.appendChild(grp);
     });
 
-    if (state.market !== 'all' && !counts[state.market]) { state.market = 'all'; }
-    sel.value = state.market;
+    fs.appendChild(el('p', 'facet-logic',
+      'Selecting more than one jurisdiction shows items touching any of them. ' +
+      'Source markets are not listed here.'));
+
+    setFacetCount(dom.marketCount, state.markets, total);
   }
 
   /* ---------- cards ---------- */
@@ -212,10 +278,9 @@
     }
 
     card.appendChild(el('h3', null, item.headline));
-
     card.appendChild(el('p', 'summary', item.summary));
 
-    var iv = el('div', 'iv');
+    var iv = el('div', 'iv impact-' + item.impact);
     var ivLabel = el('span', 'iv-label', 'Initial view');
     ivLabel.title = 'A first read for discussion, not a settled position or a recommendation to act.';
     iv.appendChild(ivLabel);
@@ -386,7 +451,8 @@
     if (!shown.length) {
       var none = el('div', 'empty');
       none.appendChild(el('strong', null, 'No items match this combination'));
-      var p = el('p', null, 'Nothing in this edition sits in that area and jurisdiction together. ');
+      var p = el('p', null,
+        'Nothing in this edition sits in those areas and jurisdictions together. ');
       var btn = el('button', 'inline-btn', 'Reset filters');
       btn.type = 'button';
       btn.addEventListener('click', resetFilters);
@@ -409,18 +475,16 @@
 
   function render() {
     renderMasthead();
-    buildAreaSelect();
-    buildMarketSelect();
+    buildAreaFacet();
+    buildMarketFacet();
     renderTop();
     renderFeed();
     renderExportState();
   }
 
   function resetFilters() {
-    state.area = 'all';
-    state.market = 'all';
-    dom.areaSelect.value = 'all';
-    dom.marketSelect.value = 'all';
+    state.areas = [];
+    state.markets = [];
     render();
   }
 
@@ -516,8 +580,10 @@
   function cacheDom() {
     [
       'editionFlag', 'editionLabel', 'publishedDate', 'editorNote', 'aiNotice',
-      'editionSelect', 'areaSelect', 'marketSelect', 'resetBtn', 'exportBtn',
-      'exportStatus', 'count', 'topSection', 'topHead', 'topBody', 'feedBody',
+      'editionSelect', 'areaFacet', 'areaFieldset', 'areaCount',
+      'marketFacet', 'marketFieldset', 'marketCount',
+      'resetBtn', 'exportBtn', 'exportStatus', 'count',
+      'topSection', 'topHead', 'topBody', 'feedBody',
       'areaDefs', 'impactDefs', 'error'
     ].forEach(function (id) {
       dom[id] = document.getElementById(id);
@@ -527,16 +593,8 @@
   function wire() {
     dom.editionSelect.addEventListener('change', function () {
       state.editionId = dom.editionSelect.value;
-      state.area = 'all';
-      state.market = 'all';
-      render();
-    });
-    dom.areaSelect.addEventListener('change', function () {
-      state.area = dom.areaSelect.value;
-      render();
-    });
-    dom.marketSelect.addEventListener('change', function () {
-      state.market = dom.marketSelect.value;
+      state.areas = [];
+      state.markets = [];
       render();
     });
     dom.resetBtn.addEventListener('click', resetFilters);
