@@ -20,6 +20,10 @@
       <span class="mono" id="editionLabel"></span>
       <span class="mono" id="publishedDate"></span>
       <span class="mono">Middle East &amp; Europe</span>
+      <span class="edition-control">
+        <label for="editionSelect">Change edition</label>
+        <select id="editionSelect"></select>
+      </span>
     </div>
   </div>
 </header>
@@ -34,10 +38,6 @@
 
   <section aria-label="Filters and export">
     <div class="toolbar">
-      <div class="field">
-        <label for="editionSelect">Edition</label>
-        <select id="editionSelect"></select>
-      </div>
       <div class="field">
         <label for="areaSelect">Area of interest</label>
         <select id="areaSelect"></select>
@@ -65,11 +65,6 @@
     <details class="panel">
       <summary>Impact ratings</summary>
       <div id="impactDefs"></div>
-    </details>
-
-    <details class="panel">
-      <summary>How the jurisdiction filter works</summary>
-      <div id="filterDefs"></div>
     </details>
   </section>
 
