@@ -2,30 +2,38 @@
   "publication": "Mobility Intelligence Brief",
   "subtitle": "Fortnightly intelligence for Abdul Latif Jameel — Middle East & Europe",
   "areas": {
-    "brand_franchise": "Brand & Franchise Moves",
-    "regulation": "Regulation & Homologation",
-    "trade_localisation": "Trade, Tariffs & Localisation",
-    "product_pipeline": "Product & Powertrain Pipeline",
-    "channel_retail": "Channel, Retail & Margin Model",
-    "aftersales": "Aftersales, Parts & Ownership Economics",
-    "charging_energy": "Charging & Energy Readiness",
-    "demand_competition": "Demand, Macro & Competitive Position"
+    "regulation_trade": "Regulation & Trade",
+    "product_powertrain": "Product & Powertrain",
+    "retail_aftersales": "Retail & Aftersales",
+    "competition_brands": "Competition & Brand Moves",
+    "charging_energy": "Charging & Energy"
+  },
+  "area_notes": {
+    "regulation_trade": "Type approval, emissions and EV mandates, tariffs, rules of origin, local content — what we can import, certify and legally sell",
+    "product_powertrain": "Model launches, powertrain mix shifts, spec suitability for regional conditions, recalls and warranty exposure",
+    "retail_aftersales": "Agency versus dealer models, direct-to-consumer, used and certified pre-owned, service networks, parts logistics",
+    "competition_brands": "Franchise awards and losses, market entries and exits, registrations and share, pricing moves, grey imports",
+    "charging_energy": "Charging network build-out, grid capacity, incentives, fuel quality, observed EV adoption"
   },
   "market_groups": [
     {
       "label": "Middle East & North Africa",
+      "filterable": true,
       "codes": ["SA", "AE", "KW", "QA", "OM", "BH", "TR", "EG", "MA", "DZ", "JO", "LB"]
     },
     {
       "label": "Europe",
+      "filterable": true,
       "codes": ["GB", "DE", "FR", "IT", "ES", "PL", "NL", "NO", "DK", "BE"]
     },
     {
-      "label": "Supranational",
+      "label": "Regional jurisdictions",
+      "filterable": true,
       "codes": ["EU", "GCC", "UNECE"]
     },
     {
-      "label": "Source markets",
+      "label": "Context only",
+      "filterable": false,
       "codes": ["CN", "JP", "KR", "GLOBAL"]
     }
   ],
@@ -109,7 +117,7 @@
           "so_what": "Sets the powertrain mix our European franchises must supply into. Petrol and diesel losing eight points of share in a year is the number that reprices our stock and spec planning.",
           "is_top": true,
           "top_rank": 1,
-          "area": "demand_competition",
+          "area": "competition_brands",
           "markets": ["EU", "DE", "FR", "IT", "ES"],
           "brands": [],
           "impact": "high",
@@ -125,7 +133,7 @@
           "so_what": "Tariffs are redirecting where cars are built, not who sells them. Chinese-brand volume in Europe keeps growing, so our European portfolio thesis holds while landed-cost assumptions shift.",
           "is_top": true,
           "top_rank": 2,
-          "area": "trade_localisation",
+          "area": "regulation_trade",
           "markets": ["EU", "CN"],
           "brands": ["Tesla", "BMW", "Volvo", "BYD", "MG"],
           "impact": "high",
@@ -141,7 +149,7 @@
           "so_what": "The PHEV gap that made Chinese hybrids cheap in Europe is closing. If duties land on a similar formula to BEVs, our European hybrid pricing resets inside two quarters.",
           "is_top": true,
           "top_rank": 3,
-          "area": "trade_localisation",
+          "area": "regulation_trade",
           "markets": ["EU", "CN"],
           "brands": ["BYD", "Chery", "Geely"],
           "impact": "high",
@@ -173,7 +181,7 @@
           "so_what": "Widens our UK electric LCV offer into a fleet segment where our conversion and aftersales capability is the differentiator rather than the vehicle.",
           "is_top": false,
           "top_rank": null,
-          "area": "product_pipeline",
+          "area": "product_powertrain",
           "markets": ["GB"],
           "brands": ["Farizon"],
           "impact": "low",
