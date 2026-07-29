@@ -61,7 +61,7 @@
   function buildSelects() {
     var ed = el('editionSelect');
     ed.innerHTML = '';
-    // Newest first in the dropdown, so the current edition is the default choice.
+    // Newest first, so the current edition is the default choice.
     for (var i = data.editions.length - 1; i >= 0; i--) {
       var e = data.editions[i];
       var isLatest = (i === data.editions.length - 1);
@@ -69,7 +69,7 @@
         esc(e.label) + (isLatest ? ' (current)' : '') + '</option>';
     }
 
-    // Only offer markets that actually appear somewhere in the data.
+    // Only offer markets that actually appear in the data.
     var used = {};
     data.editions.forEach(function (e) {
       e.items.forEach(function (it) {
@@ -77,9 +77,13 @@
       });
     });
 
+    // Groups flagged filterable:false stay as context tags on cards but are
+    // not offered as filter options — the brief scopes this to Europe and
+    // the Middle East, and source markets are context rather than coverage.
     var mk = el('marketSelect');
     mk.innerHTML = '<option value="">All jurisdictions</option>';
     data.market_groups.forEach(function (g) {
+      if (g.filterable === false) { return; }
       var opts = '';
       g.codes.forEach(function (c) {
         if (used[c]) { opts += '<option value="' + esc(c) + '">' + esc(data.markets[c] || c) + '</option>'; }
@@ -106,7 +110,10 @@
         esc(data.actions[slug]) + '</option>';
     });
 
-    var crit = data.impact_criteria && data.impact_criteria[item.impact] ? data.impact_criteria[item.impact] : '';
+    var impactCrit = data.impact_criteria && data.impact_criteria[item.impact]
+      ? data.impact_criteria[item.impact] : '';
+    var areaCrit = data.area_notes && data.area_notes[item.area]
+      ? data.area_notes[item.area] : '';
 
     return '<article class="item' + (act !== 'unreviewed' ? ' flagged' : '') + '">' +
       '<div class="i-head">' +
@@ -114,15 +121,16 @@
         '<h3>' + esc(item.headline) + '</h3>' +
       '</div>' +
       '<div class="i-tags">' +
-        '<span class="tag area">' + esc(data.areas[item.area] || item.area) + '</span>' +
-        '<span class="tag impact ' + esc(item.impact) + '" title="' + esc(crit) + '">' +
+        '<span class="tag area" title="' + esc(areaCrit) + '">' +
+          esc(data.areas[item.area] || item.area) + '</span>' +
+        '<span class="tag impact ' + esc(item.impact) + '" title="' + esc(impactCrit) + '">' +
           esc(item.impact) + ' impact</span>' +
         '<span class="tag">' + esc(names) + '</span>' +
         (item.brands && item.brands.length
           ? '<span class="tag">' + esc(item.brands.join(', ')) + '</span>' : '') +
       '</div>' +
       '<p class="i-sum">' + esc(item.summary) + '</p>' +
-      '<p class="i-so"><span class="so-lb">So what</span>' + esc(item.so_what) + '</p>' +
+      '<p class="i-so"><span class="so-lb">Initial view</span>' + esc(item.so_what) + '</p>' +
       '<div class="i-foot">' +
         '<a class="src" href="' + esc(item.source_url) + '" target="_blank" rel="noopener">' +
           esc(item.source_name) + '</a>' +
@@ -174,8 +182,7 @@
     }
 
     var empty = el('emptyState');
-    var shown = el('feedList').children.length;
-    if (shown === 0) {
+    if (el('feedList').children.length === 0) {
       empty.hidden = false;
       empty.textContent = e.items.length === 0
         ? 'This edition has no items yet.'
