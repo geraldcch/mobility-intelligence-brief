@@ -1,377 +1,219 @@
-:root {
-  --ink: #22201f;
-  --ink-soft: #55504c;
-  --ink-faint: #7a736d;
-  --paper: #fbf9f6;
-  --paper-2: #f4f1ec;
-  --paper-3: #efebe4;
-  --rule: #ded8d0;
-  --rule-strong: #b9b1a7;
-  --accent: #a6192e;
-  --accent-tint: #f6e8ea;
-  --serif: Georgia, "Times New Roman", Times, serif;
-  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
-}
-
-* { box-sizing: border-box; }
-
-body {
-  margin: 0;
-  background: var(--paper);
-  color: var(--ink);
-  font-family: var(--sans);
-  font-size: 16px;
-  line-height: 1.55;
-  -webkit-text-size-adjust: 100%;
-}
-
-.wrap { max-width: 60rem; margin: 0 auto; padding: 0 1.25rem; }
-
-a { color: var(--accent); }
-a:focus-visible,
-button:focus-visible,
-select:focus-visible,
-summary:focus-visible,
-.skip-link:focus {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
-}
-
-.skip-link {
-  position: absolute;
-  left: -9999px;
-  background: var(--paper);
-  padding: 0.5rem 0.75rem;
-  border: 1px solid var(--ink);
-}
-.skip-link:focus { left: 0.5rem; top: 0.5rem; z-index: 10; }
-
-.mono {
-  font-family: var(--mono);
-  font-size: 0.75rem;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: var(--ink-faint);
-}
-
-/* Masthead */
-.masthead { border-bottom: 3px solid var(--ink); background: var(--paper); }
-.masthead-inner { padding: 2rem 0 1rem; }
-.masthead h1 {
-  font-family: var(--serif);
-  font-size: 2rem;
-  line-height: 1.15;
-  letter-spacing: -0.015em;
-  margin: 0 0 0.35rem;
-  font-weight: 600;
-}
-.masthead .subtitle {
-  font-family: var(--serif);
-  font-size: 1rem;
-  color: var(--ink-soft);
-  margin: 0 0 1rem;
-  font-style: italic;
-}
-.masthead-meta {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.4rem 1.25rem;
-  padding-top: 0.85rem;
-  border-top: 1px solid var(--rule);
-}
-.edition-flag {
-  font-family: var(--mono);
-  font-size: 0.75rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--accent);
-  font-weight: 700;
-}
-
-.edition-control {
-  display: flex;
-  align-items: center;
-  gap: 0.45rem;
-  margin-left: auto;
-}
-.edition-control label {
-  font-family: var(--mono);
-  font-size: 0.7rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--ink-faint);
-  white-space: nowrap;
-}
-.edition-control select {
-  width: auto;
-  max-width: 18rem;
-  padding: 0.3rem 0.45rem;
-  font-size: 0.82rem;
-  background: var(--paper);
-}
-
-/* Notices */
-.notice {
-  border-left: 3px solid var(--rule-strong);
-  background: var(--paper-2);
-  padding: 0.7rem 0.9rem;
-  margin: 1.25rem 0;
-  font-size: 0.875rem;
-  color: var(--ink-soft);
-}
-.editor-note {
-  border-left: 3px solid var(--accent);
-  background: transparent;
-  padding: 0.15rem 0 0.15rem 0.9rem;
-  margin: 1.5rem 0;
-  font-family: var(--serif);
-  font-size: 1rem;
-  color: var(--ink);
-}
-.note-lead {
-  margin: 0 0 0.9rem;
-  padding-bottom: 0.8rem;
-  border-bottom: 1px solid var(--rule);
-  color: var(--ink);
-}
-
-/* Toolbar */
-.toolbar {
-  border-top: 1px solid var(--rule);
-  border-bottom: 1px solid var(--rule);
-  padding: 1rem 0;
-  margin: 1.5rem 0;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  align-items: flex-end;
-}
-.field { display: flex; flex-direction: column; gap: 0.3rem; min-width: 0; flex: 1 1 12rem; }
-.field label {
-  font-family: var(--mono);
-  font-size: 0.7rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--ink-faint);
-}
-select {
-  font-family: var(--sans);
-  font-size: 0.9rem;
-  color: var(--ink);
-  background: #fff;
-  border: 1px solid var(--rule-strong);
-  border-radius: 0;
-  padding: 0.5rem 0.55rem;
-  width: 100%;
-}
-.btn {
-  font-family: var(--sans);
-  font-size: 0.85rem;
-  border: 1px solid var(--ink);
-  background: transparent;
-  color: var(--ink);
-  padding: 0.5rem 0.85rem;
-  border-radius: 0;
-  cursor: pointer;
-}
-.btn:hover:not(:disabled) { background: var(--ink); color: var(--paper); }
-.btn:disabled { opacity: 0.4; cursor: default; }
-.btn-primary { border-color: var(--accent); color: var(--accent); }
-.btn-primary:hover:not(:disabled) { background: var(--accent); color: #fff; border-color: var(--accent); }
-.btn-row { display: flex; gap: 0.5rem; flex: 0 0 auto; align-items: flex-end; }
-
-.status-row {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 0.5rem;
-  margin: -0.5rem 0 1.5rem;
-}
-.export-status { font-size: 0.8rem; color: var(--accent); }
-
-/* Disclosure panels */
-details.panel {
-  border-top: 1px solid var(--rule);
-  padding: 0.6rem 0;
-}
-details.panel > summary {
-  cursor: pointer;
-  font-family: var(--mono);
-  font-size: 0.72rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--ink-soft);
-}
-details.panel > div { padding: 0.75rem 0 0.25rem; font-size: 0.875rem; color: var(--ink-soft); }
-dl.defs { margin: 0; }
-dl.defs dt {
-  font-weight: 600;
-  color: var(--ink);
-  margin-top: 0.7rem;
-  font-size: 0.875rem;
-}
-dl.defs dt:first-child { margin-top: 0; }
-dl.defs dd { margin: 0.15rem 0 0; }
-
-/* Sections */
-.section { margin: 2.25rem 0; }
-.section-head {
-  display: flex;
-  align-items: baseline;
-  gap: 0.75rem;
-  border-bottom: 2px solid var(--ink);
-  padding-bottom: 0.4rem;
-  margin-bottom: 1.25rem;
-  flex-wrap: wrap;
-}
-.section-head h2 {
-  font-family: var(--serif);
-  font-size: 1.2rem;
-  margin: 0;
-  font-weight: 600;
-}
-
-/* Cards */
-.card {
-  border: 1px solid var(--rule);
-  border-left: 3px solid var(--rule-strong);
-  background: #fff;
-  padding: 1.1rem 1.15rem;
-  margin-bottom: 1rem;
-}
-.card.is-top { border-left-color: var(--accent); }
-.card-rank {
-  font-family: var(--mono);
-  font-size: 0.7rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--accent);
-  font-weight: 700;
-  display: block;
-  margin-bottom: 0.35rem;
-}
-.card h3 {
-  font-family: var(--serif);
-  font-size: 1.2rem;
-  line-height: 1.3;
-  margin: 0 0 0.75rem;
-  font-weight: 600;
-  letter-spacing: -0.005em;
-}
-.card .summary { margin: 0 0 0.9rem; font-size: 0.875rem; color: var(--ink-soft); }
-.iv {
-  border-left: 3px solid var(--accent);
-  background: var(--accent-tint);
-  padding: 0.65rem 0.8rem;
-  margin: 0 0 0.85rem;
-}
-.iv-label {
-  font-family: var(--mono);
-  font-size: 0.68rem;
-  letter-spacing: 0.09em;
-  text-transform: uppercase;
-  color: var(--accent);
-  font-weight: 700;
-  display: block;
-  margin-bottom: 0.25rem;
-}
-.iv p { margin: 0; font-size: 1rem; line-height: 1.5; color: var(--ink); }
-
-.badges { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 0.65rem; }
-.badge {
-  font-family: var(--mono);
-  font-size: 0.68rem;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  border: 1px solid var(--rule-strong);
-  padding: 0.18rem 0.4rem;
-  color: var(--ink-soft);
-  white-space: nowrap;
-}
-.badge-area { border-color: var(--ink); color: var(--ink); cursor: help; }
-.badge-impact { cursor: help; }
-.badge-impact.high { border-color: var(--accent); color: var(--accent); background: var(--accent-tint); font-weight: 700; }
-.badge-impact.medium { border-color: var(--rule-strong); color: var(--ink-soft); }
-.badge-impact.low { border-color: var(--rule); color: var(--ink-faint); }
-.badge-src { border-style: dashed; cursor: help; }
-
-.card-foot {
-  border-top: 1px solid var(--rule);
-  padding-top: 0.7rem;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem 1.25rem;
-  align-items: flex-end;
-  justify-content: space-between;
-}
-.src { font-size: 0.8rem; color: var(--ink-faint); }
-.src a { text-decoration: underline; }
-.action-field { display: flex; flex-direction: column; gap: 0.25rem; flex: 0 1 14rem; min-width: 11rem; }
-.action-field label {
-  font-family: var(--mono);
-  font-size: 0.68rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--ink-faint);
-}
-
-.coherence-flag {
-  margin: 0.7rem 0 0;
-  padding: 0.45rem 0.6rem;
-  border: 1px dashed var(--accent);
-  background: var(--accent-tint);
-  color: var(--accent);
-  font-size: 0.8rem;
-}
-
-.empty {
-  border: 1px dashed var(--rule-strong);
-  background: var(--paper-2);
-  padding: 1.5rem 1.25rem;
-  text-align: left;
-  color: var(--ink-soft);
-  font-size: 0.9rem;
-}
-.empty strong { color: var(--ink); display: block; margin-bottom: 0.3rem; font-family: var(--serif); font-size: 1rem; }
-.inline-btn {
-  background: none;
-  border: none;
-  border-bottom: 1px solid var(--accent);
-  color: var(--accent);
-  font: inherit;
-  padding: 0;
-  cursor: pointer;
-}
-
-footer.site-foot {
-  border-top: 1px solid var(--rule);
-  margin-top: 3rem;
-  padding: 1.5rem 0 3rem;
-  font-size: 0.8rem;
-  color: var(--ink-faint);
-}
-footer.site-foot p { margin: 0.3rem 0; }
-
-@media (max-width: 34rem) {
-  .masthead h1 { font-size: 1.6rem; }
-  .masthead-inner { padding: 1.5rem 0 0.75rem; }
-  .edition-control {
-    margin-left: 0;
-    width: 100%;
-    flex-direction: column;
-    align-items: stretch;
-    gap: 0.25rem;
-    padding-top: 0.5rem;
-  }
-  .edition-control select { max-width: none; width: 100%; }
-  .toolbar { gap: 0.85rem; }
-  .field { flex: 1 1 100%; }
-  .btn-row { width: 100%; }
-  .btn-row .btn { flex: 1 1 auto; }
-  .card { padding: 0.9rem; }
-  .card h3 { font-size: 1.08rem; }
-  .card-foot { flex-direction: column; align-items: stretch; }
-  .action-field { flex: 1 1 auto; }
+{
+  "publication": "Mobility Intelligence Brief",
+  "subtitle": "Fortnightly intelligence for automotive distribution — Middle East and Europe",
+  "audience_note": "Prepared for corporate strategy and senior leadership.",
+  "ai_notice": "Items are screened from named public sources and summarised with AI assistance. The \"Initial view\" line is a first read intended to open discussion, not a settled position or a recommendation to act.",
+  "impact_criteria": {
+    "high": "Changes a decision we would otherwise take, or moves volume or gross profit in a priority market, within 12 months.",
+    "medium": "Affects our economics or competitive position, but no decision is required this cycle.",
+    "low": "Context. Logged for the record."
+  },
+  "filter_note": "Countries and regional jurisdictions are filterable. Source markets — China, Japan, South Korea — appear as tags but are not filter options: they are where decisions are made, not markets we distribute into. The most consequential items are often supranational, so EU, GCC and UNECE are treated as first-class jurisdictions rather than being forced into a country field.",
+  "areas": {
+    "regulation_trade": {
+      "name": "Regulation & Trade",
+      "definition": "Type approval and homologation, emissions and safety rules, tariffs and duties, rules of origin, local-content requirements, shipping and routing. Governs whether we can land, certify and legally sell a unit, and at what cost."
+    },
+    "product_powertrain": {
+      "name": "Product & Powertrain",
+      "definition": "Model launches and facelifts, powertrain mix, specification suitability for regional climate and fuel quality, recalls and warranty exposure. Governs what reaches our showrooms and what it displaces in the existing line-up."
+    },
+    "retail_aftersales": {
+      "name": "Retail & Aftersales",
+      "definition": "Agency and dealer contracts, direct-to-consumer and online retail, showroom formats, used and certified pre-owned, fleet, finance and insurance — and separately, service networks, parts logistics, warranty terms and the ownership-economics annuity. Governs how we sell and what we continue to earn after the sale."
+    },
+    "competition_brand": {
+      "name": "Competition & Brand Moves",
+      "definition": "Distribution agreements, market entries and exits, competitor franchise wins, registrations and market share, pricing and discounting, macro and consumer-credit conditions, grey and parallel imports. Governs the portfolio we can represent and the volume the market gives us."
+    },
+    "charging_energy": {
+      "name": "Charging & Energy",
+      "definition": "Charging network build-out, grid capacity and constraints, tariffs and incentives, fuel quality, observed EV adoption. An operating precondition: an EV franchise is worth only what the local energy infrastructure can support."
+    }
+  },
+  "market_groups": ["Middle East & North Africa", "Europe", "Jurisdictions", "Source markets"],
+  "markets": {
+    "SA": { "name": "Saudi Arabia", "group": "Middle East & North Africa", "filterable": true },
+    "AE": { "name": "United Arab Emirates", "group": "Middle East & North Africa", "filterable": true },
+    "KW": { "name": "Kuwait", "group": "Middle East & North Africa", "filterable": true },
+    "QA": { "name": "Qatar", "group": "Middle East & North Africa", "filterable": true },
+    "OM": { "name": "Oman", "group": "Middle East & North Africa", "filterable": true },
+    "BH": { "name": "Bahrain", "group": "Middle East & North Africa", "filterable": true },
+    "TR": { "name": "Türkiye", "group": "Middle East & North Africa", "filterable": true },
+    "EG": { "name": "Egypt", "group": "Middle East & North Africa", "filterable": true },
+    "MA": { "name": "Morocco", "group": "Middle East & North Africa", "filterable": true },
+    "DZ": { "name": "Algeria", "group": "Middle East & North Africa", "filterable": true },
+    "JO": { "name": "Jordan", "group": "Middle East & North Africa", "filterable": true },
+    "LB": { "name": "Lebanon", "group": "Middle East & North Africa", "filterable": true },
+    "GB": { "name": "United Kingdom", "group": "Europe", "filterable": true },
+    "DE": { "name": "Germany", "group": "Europe", "filterable": true },
+    "FR": { "name": "France", "group": "Europe", "filterable": true },
+    "IT": { "name": "Italy", "group": "Europe", "filterable": true },
+    "ES": { "name": "Spain", "group": "Europe", "filterable": true },
+    "PL": { "name": "Poland", "group": "Europe", "filterable": true },
+    "NL": { "name": "Netherlands", "group": "Europe", "filterable": true },
+    "NO": { "name": "Norway", "group": "Europe", "filterable": true },
+    "DK": { "name": "Denmark", "group": "Europe", "filterable": true },
+    "BE": { "name": "Belgium", "group": "Europe", "filterable": true },
+    "MT": { "name": "Malta", "group": "Europe", "filterable": true },
+    "EU": { "name": "European Union", "group": "Jurisdictions", "filterable": true },
+    "GCC": { "name": "Gulf Cooperation Council", "group": "Jurisdictions", "filterable": true },
+    "UNECE": { "name": "UNECE", "group": "Jurisdictions", "filterable": true },
+    "GLOBAL": { "name": "Global", "group": "Jurisdictions", "filterable": true },
+    "CN": { "name": "China", "group": "Source markets", "filterable": false },
+    "JP": { "name": "Japan", "group": "Source markets", "filterable": false },
+    "KR": { "name": "South Korea", "group": "Source markets", "filterable": false }
+  },
+  "actions": {
+    "unreviewed": "Unreviewed",
+    "no_action": "No action",
+    "monitor": "Monitor",
+    "deep_dive": "Deep dive",
+    "escalate": "Escalate"
+  },
+  "editions": [
+    {
+      "id": "ed-001",
+      "number": 1,
+      "start_date": "2026-06-15",
+      "end_date": "2026-06-28",
+      "published_date": "2026-06-29",
+      "label": "15–28 June 2026",
+      "editor_note": "This archive edition is a structural placeholder. Items for this window have not yet been compiled.",
+      "items": []
+    },
+    {
+      "id": "ed-002",
+      "number": 2,
+      "start_date": "2026-06-29",
+      "end_date": "2026-07-12",
+      "published_date": "2026-07-13",
+      "label": "29 June – 12 July 2026",
+      "editor_note": "This archive edition is a structural placeholder. Items for this window have not yet been compiled.",
+      "items": []
+    },
+    {
+      "id": "ed-003",
+      "number": 3,
+      "start_date": "2026-07-13",
+      "end_date": "2026-07-26",
+      "published_date": "2026-07-27",
+      "label": "13–26 July 2026",
+      "editor_note": "This fortnight is dominated by cost of access rather than demand. Hormuz war-risk pricing reset the Gulf landed-cost base, while in Europe the tariff perimeter kept moving — Chinese brands now take roughly a third of the plug-in hybrid market that duties do not yet cover. Coverage is weighted toward Europe and the supranational layer; Gulf franchise and standards developments are under-represented and are a known gap in this cycle.",
+      "items": [
+        {
+          "id": "e3-07",
+          "headline": "Hormuz war-risk premiums surge to 10% of hull value as tanker attacks resume",
+          "summary": "War-risk insurance for Strait of Hormuz transits rose to between 3% and 10% of hull value, against 0.25% before the conflict, after Iran resumed attacks on vessels routing through Omani waters and struck two UAE supertankers. Iran declared the waterway closed again and the IMO advised ships to avoid transit.",
+          "initial_view": "Every unit we land in the Gulf now carries a war-risk cost measured in points of hull value rather than basis points. Landed-cost models, stock cover and customer delivery promises across the GCC look due for rebasing.",
+          "is_top": true,
+          "top_rank": 1,
+          "area": "regulation_trade",
+          "markets": ["GCC", "AE", "SA", "OM", "GLOBAL"],
+          "brands": [],
+          "impact": "high",
+          "source_name": "The National",
+          "source_url": "https://www.thenationalnews.com/business/2026/07/17/war-risk-shipping-premium-surges-again-as-tensions-escalate-at-strait-of-hormuz/",
+          "source_date": "2026-07-17",
+          "seed_action": "escalate"
+        },
+        {
+          "id": "e3-04",
+          "headline": "Chinese brands take a third of Europe's plug-in hybrid market as duties near",
+          "summary": "Registration data showed Chinese brands at roughly a third of European plug-in hybrid deliveries in June, led by BYD, Chery and Geely. Reporting indicated the European Commission is moving closer to countervailing duties on Chinese-built plug-in hybrids, subject to member-state approval.",
+          "initial_view": "The powertrain gap that made Chinese hybrids cheap in Europe is closing. If duties land on a formula similar to battery-electric vehicles, our European hybrid pricing and volume assumptions would need reworking inside two quarters.",
+          "is_top": true,
+          "top_rank": 2,
+          "area": "competition_brand",
+          "markets": ["EU", "CN"],
+          "brands": ["BYD", "Chery", "Geely"],
+          "impact": "high",
+          "source_name": "Carscoops",
+          "source_url": "https://www.carscoops.com/2026/07/china-phev-europe-tariffs/",
+          "source_date": "2026-07-24",
+          "seed_action": "escalate"
+        },
+        {
+          "id": "e3-03",
+          "headline": "EU car market up 5.7% in H1 2026 as battery-electric share reaches 20.7%",
+          "summary": "ACEA reported 5.90 million new EU car registrations in the first half of 2026, up 5.7%. Battery-electric cars took 20.7% share against 15.6% a year earlier, hybrids 37.3% and plug-in hybrids 9.8%, while the combined petrol and diesel share fell to 29.7% from 37.8%.",
+          "initial_view": "Sets the powertrain mix our European franchises must supply into. Petrol and diesel losing eight points of share in twelve months is the figure that bears on stock, specification and residual-value planning.",
+          "is_top": true,
+          "top_rank": 3,
+          "area": "competition_brand",
+          "markets": ["EU", "DE", "FR", "IT", "ES"],
+          "brands": [],
+          "impact": "high",
+          "source_name": "ACEA",
+          "source_url": "https://www.acea.auto/pc-registrations/new-car-registrations-5-7-in-h1-2026-battery-electric-20-7-market-share/",
+          "source_date": "2026-07-23",
+          "seed_action": null
+        },
+        {
+          "id": "e3-01",
+          "headline": "EU tariffs cut China-built BEV share but Chinese brands keep growing",
+          "summary": "Transport & Environment analysis found China-produced electric cars fell to 17% of the EU battery-electric market in the first quarter of 2026 from a 22% peak, driven mainly by Tesla, BMW and Volvo moving output to Europe. Chinese-brand imports continued to rise, as did imports of Chinese batteries.",
+          "initial_view": "Tariffs appear to be redirecting where cars are built rather than who sells them. Chinese-brand volume in Europe keeps growing, which supports our European portfolio thesis while shifting the landed-cost assumptions underneath it.",
+          "is_top": false,
+          "top_rank": null,
+          "area": "regulation_trade",
+          "markets": ["EU", "CN"],
+          "brands": ["Tesla", "BMW", "Volvo", "BYD", "MG"],
+          "impact": "high",
+          "source_name": "Transport & Environment",
+          "source_url": "https://www.transportenvironment.org/articles/are-the-ev-tariffs-working-western-carmakers-shifted-production-to-eu-but-chinese-brands-continue-to-grow-analysis",
+          "source_date": "2026-07-13",
+          "seed_action": "deep_dive"
+        },
+        {
+          "id": "e3-02",
+          "headline": "Commission publishes Electrification Action Plan with 46% target and V2G framework",
+          "summary": "On 17 July the European Commission published its Electrification Action Plan alongside a proposed Emissions Trading System review and a legislative proposal on network charges. It set an indicative 46% electrification target for 2040 and committed to regulatory sandboxes for vehicle-to-grid projects.",
+          "initial_view": "Signals the charging and grid rules our European markets will operate under, and opens a vehicle-to-grid services angle adjacent to vehicle sales that we do not currently price.",
+          "is_top": false,
+          "top_rank": null,
+          "area": "charging_energy",
+          "markets": ["EU"],
+          "brands": [],
+          "impact": "medium",
+          "source_name": "Linklaters Sustainable Futures",
+          "source_url": "https://sustainablefutures.linklaters.com/post/102ne3z/european-commission-publishes-electrification-action-plan-to-make-europe-the-fir",
+          "source_date": "2026-07-17",
+          "seed_action": "monitor"
+        },
+        {
+          "id": "e3-06",
+          "headline": "EU charging capacity outpaces EV uptake in every member state except Malta",
+          "summary": "Transport & Environment analysis found that by the end of March 2026 all EU member states except Malta met the AFIR requirement of 1.3 kW of public charging capacity per registered battery-electric vehicle, with bloc-wide capacity exceeding the fleet-based target by 180%. Public charge points reached 1.1 million by the end of 2025.",
+          "initial_view": "Weakens charging availability as the stated blocker to EV volume in our European markets. On this reading the binding constraint is price and residual values rather than infrastructure.",
+          "is_top": false,
+          "top_rank": null,
+          "area": "charging_energy",
+          "markets": ["EU", "PL"],
+          "brands": [],
+          "impact": "medium",
+          "source_name": "Transport & Environment",
+          "source_url": "https://www.transportenvironment.org/articles/charging-infrastructure-has-far-outpaced-ev-sales-in-all-but-one-eu-country-analysis",
+          "source_date": "2026-07-20",
+          "seed_action": "no_action"
+        },
+        {
+          "id": "e3-05",
+          "headline": "Farizon adds SV Sport to UK electric van range as dealer network builds",
+          "summary": "Farizon launched a Sport version of its SV electric van in the UK, developed with authorised converter CPD Bodies and featuring a UK-developed exterior package. Distributor Jameel Motors continues building its UK franchise network, targeting experienced van and truck dealers rather than a high-volume footprint.",
+          "initial_view": "Tests whether a converter-led specification strategy can win UK fleet business without the cost of a broad dealer network — relevant to how we would scale other electric light commercial franchises.",
+          "is_top": false,
+          "top_rank": null,
+          "area": "retail_aftersales",
+          "markets": ["GB"],
+          "brands": ["Farizon", "Geely"],
+          "impact": "low",
+          "source_name": "Automotive Management",
+          "source_url": "https://www.am-online.com/news/farizon-adds-sport-version-to-sv-electric-van-range",
+          "source_date": "2026-07-16",
+          "seed_action": "no_action"
+        }
+      ]
+    }
+  ]
 }
