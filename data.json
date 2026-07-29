@@ -5,7 +5,7 @@
   "ai_notice": "Items are screened from named public sources and summarised with AI assistance. The \"Initial view\" line is a first read intended to open discussion, not a settled position or a recommendation to act.",
   "impact_coherence": "Impact and action must agree. A high-impact item cannot sit at Unreviewed or No action — if nothing is being done about it, it is not high impact.",
   "impact_criteria": {
-    "high": "Changes a decision we would otherwise take, or moves volume or gross profit in a market we sell in, within 12 months. Rare by design, and capped at three items per edition.",
+    "high": "Changes a decision we would otherwise take, or moves volume or gross profit in a market we sell in, within 12 months.",
     "medium": "Informs planning or revises our read of a market, but forces no decision this cycle. Registration data and directional policy signals normally sit here.",
     "low": "Context. Logged for the record."
   },
@@ -104,10 +104,9 @@
       "items": [
         {
           "id": "e3-07",
-          "headline": "Hormuz war-risk premiums surge to 10% of hull value as tanker attacks resume",
-          "summary": "War-risk insurance for Strait of Hormuz transits rose to between 3% and 10% of hull value, against 0.25% before the conflict, after Iran resumed attacks on vessels routing through Omani waters and struck two UAE supertankers. Iran declared the waterway closed again and the IMO advised ships to avoid transit.",
-          "initial_view": "Every unit we land in the Gulf now carries a war-risk cost measured in points of hull value rather than basis points. Landed-cost models, stock cover and customer delivery promises across the GCC look due for rebasing.",
-          "is_top": true,
+          "headline": "Hormuz war-risk premiums reach 3–10% of hull value as tanker attacks resume",
+          "summary": "War-risk insurance for Strait of Hormuz transits reached 3% to 10% of hull value, against 0.25% before the conflict, after Iran resumed attacks on vessels routing through Omani waters and struck two Adnoc supertankers. Iran declared the waterway closed again, and the IMO reported roughly 6,000 seafarers trapped while working to evacuate stranded vessels.",
+          "initial_view": "Every unit we land in the Gulf now carries a war-risk cost in points of hull value rather than basis points, and both routings carry exposure — sanctions compliance to the north, interdiction risk to the south. Landed-cost models and delivery promises across the GCC look due for rebasing.",          "is_top": true,
           "top_rank": 1,
           "area": "regulation_trade",
           "markets": ["GCC", "AE", "SA", "OM", "GLOBAL"],
@@ -190,7 +189,7 @@
           "is_top": false,
           "top_rank": null,
           "area": "charging_energy",
-          "markets": ["EU", "PL"],
+          "markets": ["EU", "MT"],
           "brands": [],
           "impact": "low",
           "source_name": "Transport & Environment",
