@@ -200,14 +200,14 @@
 
     card.appendChild(el('h3', null, item.headline));
 
+    card.appendChild(el('p', 'summary', item.summary));
+
     var iv = el('div', 'iv');
     var ivLabel = el('span', 'iv-label', 'Initial view');
     ivLabel.title = 'A first read for discussion, not a settled position or a recommendation to act.';
     iv.appendChild(ivLabel);
     iv.appendChild(el('p', null, item.initial_view));
     card.appendChild(iv);
-
-    card.appendChild(el('p', 'summary', item.summary));
 
     var badges = el('div', 'badges');
 
@@ -272,6 +272,22 @@
     foot.appendChild(field);
 
     card.appendChild(foot);
+
+    var flag = el('p', 'coherence-flag');
+    flag.hidden = true;
+    function syncFlag() {
+      var chosen = select.value;
+      var clash = item.impact === 'high' &&
+        (chosen === 'unreviewed' || chosen === 'no_action');
+      flag.textContent = clash
+        ? 'High impact with no work assigned — review this rating or the action.'
+        : '';
+      flag.hidden = !clash;
+    }
+    select.addEventListener('change', syncFlag);
+    syncFlag();
+    card.appendChild(flag);
+
     return card;
   }
 
@@ -398,8 +414,14 @@
       defs.appendChild(el('dt', null, areaMeta(slug).name));
       defs.appendChild(el('dd', null, areaMeta(slug).definition));
     });
+    if (state.data.filter_note) {
+      dom.areaDefs.appendChild(el('p', 'note-lead', state.data.filter_note));
+    }
     dom.areaDefs.appendChild(defs);
 
+    if (state.data.impact_coherence) {
+      dom.impactDefs.appendChild(el('p', 'note-lead', state.data.impact_coherence));
+    }
     var crit = el('dl', 'defs');
     var criteria = state.data.impact_criteria || {};
     ['high', 'medium', 'low'].forEach(function (key) {
@@ -408,8 +430,6 @@
       crit.appendChild(el('dd', null, criteria[key]));
     });
     dom.impactDefs.appendChild(crit);
-
-    dom.filterDefs.appendChild(el('p', null, state.data.filter_note));
 
     dom.aiNotice.textContent = state.data.ai_notice;
   }
