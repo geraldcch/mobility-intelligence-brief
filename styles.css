@@ -4,6 +4,7 @@
   --ink-faint: #7a736d;
   --paper: #fbf9f6;
   --paper-2: #f4f1ec;
+  --paper-3: #efebe4;
   --rule: #ded8d0;
   --rule-strong: #b9b1a7;
   --accent: #a6192e;
@@ -35,16 +36,6 @@ summary:focus-visible,
 .skip-link:focus {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
-}
-
-.sr-only {
-  position: absolute;
-  width: 1px; height: 1px;
-  padding: 0; margin: -1px;
-  overflow: hidden;
-  clip: rect(0 0 0 0);
-  white-space: nowrap;
-  border: 0;
 }
 
 .skip-link {
@@ -85,8 +76,7 @@ summary:focus-visible,
 .masthead-meta {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem 1.25rem;
-  align-items: center;
+  gap: 0.4rem 1.25rem;
   padding-top: 0.85rem;
   border-top: 1px solid var(--rule);
 }
@@ -97,25 +87,6 @@ summary:focus-visible,
   text-transform: uppercase;
   color: var(--accent);
   font-weight: 700;
-}
-.edition-picker {
-  margin-left: auto;
-  display: flex;
-  align-items: center;
-  gap: 0.45rem;
-  min-width: 0;
-}
-.edition-picker .picker-cue {
-  font-family: var(--mono);
-  font-size: 0.7rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--ink-faint);
-}
-.edition-picker select {
-  font-size: 0.8rem;
-  padding: 0.35rem 0.45rem;
-  max-width: 100%;
 }
 
 /* Notices */
@@ -129,13 +100,13 @@ summary:focus-visible,
 }
 .editor-note {
   border-left: 3px solid var(--accent);
+  background: transparent;
   padding: 0.15rem 0 0.15rem 0.9rem;
   margin: 1.5rem 0;
   font-family: var(--serif);
   font-size: 1rem;
   color: var(--ink);
 }
-.editor-note p { margin: 0; }
 
 /* Toolbar */
 .toolbar {
@@ -189,11 +160,13 @@ select {
   gap: 0.5rem;
   margin: -0.5rem 0 1.5rem;
 }
-.export-status { font-size: 0.8rem; color: var(--accent); margin: 0; }
-.status-row p { margin: 0; }
+.export-status { font-size: 0.8rem; color: var(--accent); }
 
 /* Disclosure panels */
-details.panel { border-top: 1px solid var(--rule); padding: 0.6rem 0; }
+details.panel {
+  border-top: 1px solid var(--rule);
+  padding: 0.6rem 0;
+}
 details.panel > summary {
   cursor: pointer;
   font-family: var(--mono);
@@ -204,15 +177,14 @@ details.panel > summary {
 }
 details.panel > div { padding: 0.75rem 0 0.25rem; font-size: 0.875rem; color: var(--ink-soft); }
 dl.defs { margin: 0; }
-dl.defs dt { font-weight: 600; color: var(--ink); margin-top: 0.7rem; font-size: 0.875rem; }
+dl.defs dt {
+  font-weight: 600;
+  color: var(--ink);
+  margin-top: 0.7rem;
+  font-size: 0.875rem;
+}
 dl.defs dt:first-child { margin-top: 0; }
 dl.defs dd { margin: 0.15rem 0 0; }
-.panel-tail {
-  margin: 1rem 0 0;
-  padding-top: 0.75rem;
-  border-top: 1px solid var(--rule);
-  font-style: italic;
-}
 
 /* Sections */
 .section { margin: 2.25rem 0; }
@@ -225,7 +197,12 @@ dl.defs dd { margin: 0.15rem 0 0; }
   margin-bottom: 1.25rem;
   flex-wrap: wrap;
 }
-.section-head h2 { font-family: var(--serif); font-size: 1.2rem; margin: 0; font-weight: 600; }
+.section-head h2 {
+  font-family: var(--serif);
+  font-size: 1.2rem;
+  margin: 0;
+  font-weight: 600;
+}
 
 /* Cards */
 .card {
@@ -250,11 +227,10 @@ dl.defs dd { margin: 0.15rem 0 0; }
   font-family: var(--serif);
   font-size: 1.2rem;
   line-height: 1.3;
-  margin: 0 0 0.7rem;
+  margin: 0 0 0.75rem;
   font-weight: 600;
   letter-spacing: -0.005em;
 }
-.card .summary { margin: 0 0 0.85rem; font-size: 0.875rem; color: var(--ink-soft); }
 .iv {
   border-left: 3px solid var(--accent);
   background: var(--accent-tint);
@@ -270,9 +246,9 @@ dl.defs dd { margin: 0.15rem 0 0; }
   font-weight: 700;
   display: block;
   margin-bottom: 0.25rem;
-  cursor: help;
 }
 .iv p { margin: 0; font-size: 1rem; line-height: 1.5; color: var(--ink); }
+.card .summary { margin: 0 0 0.9rem; font-size: 0.875rem; color: var(--ink-soft); }
 
 .badges { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 0.65rem; }
 .badge {
@@ -301,7 +277,7 @@ dl.defs dd { margin: 0.15rem 0 0; }
   align-items: flex-end;
   justify-content: space-between;
 }
-.src { font-size: 0.8rem; color: var(--ink-faint); margin: 0; }
+.src { font-size: 0.8rem; color: var(--ink-faint); }
 .src a { text-decoration: underline; }
 .action-field { display: flex; flex-direction: column; gap: 0.25rem; flex: 0 1 14rem; min-width: 11rem; }
 .action-field label {
@@ -311,23 +287,16 @@ dl.defs dd { margin: 0.15rem 0 0; }
   text-transform: uppercase;
   color: var(--ink-faint);
 }
-.coherence {
-  font-size: 0.75rem;
-  color: var(--accent);
-  margin: 0.35rem 0 0;
-  line-height: 1.4;
-}
-.coherence[hidden] { display: none; }
 
 .empty {
   border: 1px dashed var(--rule-strong);
   background: var(--paper-2);
   padding: 1.5rem 1.25rem;
+  text-align: left;
   color: var(--ink-soft);
   font-size: 0.9rem;
 }
 .empty strong { color: var(--ink); display: block; margin-bottom: 0.3rem; font-family: var(--serif); font-size: 1rem; }
-.empty p { margin: 0; }
 .inline-btn {
   background: none;
   border: none;
@@ -350,8 +319,6 @@ footer.site-foot p { margin: 0.3rem 0; }
 @media (max-width: 34rem) {
   .masthead h1 { font-size: 1.6rem; }
   .masthead-inner { padding: 1.5rem 0 0.75rem; }
-  .edition-picker { margin-left: 0; width: 100%; }
-  .edition-picker select { flex: 1 1 auto; }
   .toolbar { gap: 0.85rem; }
   .field { flex: 1 1 100%; }
   .btn-row { width: 100%; }
@@ -360,4 +327,57 @@ footer.site-foot p { margin: 0.3rem 0; }
   .card h3 { font-size: 1.08rem; }
   .card-foot { flex-direction: column; align-items: stretch; }
   .action-field { flex: 1 1 auto; }
+}
+/* --- Revision 2 --- */
+
+.masthead-meta { align-items: center; }
+
+.edition-control {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin-left: auto;
+}
+.edition-control label {
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  white-space: nowrap;
+}
+.edition-control select {
+  width: auto;
+  max-width: 18rem;
+  padding: 0.3rem 0.45rem;
+  font-size: 0.82rem;
+  background: var(--paper);
+}
+
+.note-lead {
+  margin: 0 0 0.9rem;
+  padding-bottom: 0.8rem;
+  border-bottom: 1px solid var(--rule);
+  color: var(--ink);
+}
+
+.coherence-flag {
+  margin: 0.7rem 0 0;
+  padding: 0.45rem 0.6rem;
+  border: 1px dashed var(--accent);
+  background: var(--accent-tint);
+  color: var(--accent);
+  font-size: 0.8rem;
+}
+
+@media (max-width: 34rem) {
+  .edition-control {
+    margin-left: 0;
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.25rem;
+    padding-top: 0.5rem;
+  }
+  .edition-control select { max-width: none; width: 100%; }
 }
