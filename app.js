@@ -471,6 +471,7 @@
       ? all
       : all.filter(function (it) { return !it.is_top; });
     var shown = sortItems(pool.filter(matches));
+    dom.feedHeading.textContent = filterActive() ? 'Filtered results' : 'Remaining items';
 
     if (!all.length) {
       dom.count.textContent = 'No items in this edition';
