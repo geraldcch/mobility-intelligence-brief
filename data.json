@@ -3,12 +3,13 @@
   "subtitle": "Fortnightly intelligence for automotive distribution — Middle East and Europe",
   "audience_note": "Prepared for corporate strategy and senior leadership.",
   "ai_notice": "Items are screened from named public sources and summarised with AI assistance. The \"Initial view\" line is a first read intended to open discussion, not a settled position or a recommendation to act.",
+  "impact_coherence": "Impact and action must agree. A high-impact item cannot sit at Unreviewed or No action — if nothing is being done about it, it is not high impact.",
   "impact_criteria": {
-    "high": "Changes a decision we would otherwise take, or moves volume or gross profit in a priority market, within 12 months.",
-    "medium": "Affects our economics or competitive position, but no decision is required this cycle.",
+    "high": "Changes a decision we would otherwise take, or moves volume or gross profit in a market we sell in, within 12 months. Rare by design, and capped at three items per edition.",
+    "medium": "Informs planning or revises our read of a market, but forces no decision this cycle. Registration data and directional policy signals normally sit here.",
     "low": "Context. Logged for the record."
   },
-  "filter_note": "Countries and regional jurisdictions are filterable. Source markets — China, Japan, South Korea — appear as tags but are not filter options: they are where decisions are made, not markets we distribute into. The most consequential items are often supranational, so EU, GCC and UNECE are treated as first-class jurisdictions rather than being forced into a country field.",
+  "filter_note": "Countries and regional jurisdictions such as the EU and GCC are filterable; source markets — China, Japan, South Korea — appear as tags only, since they are where decisions are made rather than markets we distribute into.",
   "areas": {
     "regulation_trade": {
       "name": "Regulation & Trade",
@@ -20,7 +21,7 @@
     },
     "retail_aftersales": {
       "name": "Retail & Aftersales",
-      "definition": "Agency and dealer contracts, direct-to-consumer and online retail, showroom formats, used and certified pre-owned, fleet, finance and insurance — and separately, service networks, parts logistics, warranty terms and the ownership-economics annuity. Governs how we sell and what we continue to earn after the sale."
+      "definition": "Agency and dealer contracts, direct-to-consumer and online retail, showroom formats, used and certified pre-owned, fleet, finance and insurance — and separately, service networks, parts logistics, warranty terms and the ownership-economics annuity. Governs how we sell, and what we continue to earn after the sale."
     },
     "competition_brand": {
       "name": "Competition & Brand Moves",
@@ -143,11 +144,11 @@
           "area": "competition_brand",
           "markets": ["EU", "DE", "FR", "IT", "ES"],
           "brands": [],
-          "impact": "high",
+          "impact": "medium",
           "source_name": "ACEA",
           "source_url": "https://www.acea.auto/pc-registrations/new-car-registrations-5-7-in-h1-2026-battery-electric-20-7-market-share/",
           "source_date": "2026-07-23",
-          "seed_action": null
+          "seed_action": "monitor"
         },
         {
           "id": "e3-01",
@@ -159,7 +160,7 @@
           "area": "regulation_trade",
           "markets": ["EU", "CN"],
           "brands": ["Tesla", "BMW", "Volvo", "BYD", "MG"],
-          "impact": "high",
+          "impact": "medium",
           "source_name": "Transport & Environment",
           "source_url": "https://www.transportenvironment.org/articles/are-the-ev-tariffs-working-western-carmakers-shifted-production-to-eu-but-chinese-brands-continue-to-grow-analysis",
           "source_date": "2026-07-13",
@@ -191,7 +192,7 @@
           "area": "charging_energy",
           "markets": ["EU", "PL"],
           "brands": [],
-          "impact": "medium",
+          "impact": "low",
           "source_name": "Transport & Environment",
           "source_url": "https://www.transportenvironment.org/articles/charging-infrastructure-has-far-outpaced-ev-sales-in-all-but-one-eu-country-analysis",
           "source_date": "2026-07-20",
@@ -211,7 +212,7 @@
           "source_name": "Automotive Management",
           "source_url": "https://www.am-online.com/news/farizon-adds-sport-version-to-sv-electric-van-range",
           "source_date": "2026-07-16",
-          "seed_action": "no_action"
+          "seed_action": null
         }
       ]
     }
