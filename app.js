@@ -147,6 +147,22 @@
 
   /* ---------- filter facets ---------- */
 
+  /* Rebuilding the checkboxes discards keyboard focus, so remember which one
+     was focused and restore it after the rebuild. */
+  function focusedValueIn(fieldset) {
+    var active = document.activeElement;
+    if (active && active.type === 'checkbox' && fieldset.contains(active)) {
+      return active.value;
+    }
+    return null;
+  }
+
+  function restoreFocus(fieldset, value) {
+    if (!value) { return; }
+    var node = fieldset.querySelector('input[value="' + value + '"]');
+    if (node) { node.focus(); }
+  }
+
   function facetRow(name, value, labelText, count, checked, isAll, onChange) {
     var row = el('label', 'facet-row' + (isAll ? ' is-all' : ''));
     var box = document.createElement('input');
@@ -161,10 +177,10 @@
     return row;
   }
 
-  function setFacetCount(node, selected, total) {
-    node.textContent = selected.length
-      ? selected.length + ' of ' + total
-      : 'All';
+  function summarise(selected, names, allLabel, noun) {
+    if (!selected.length) { return allLabel; }
+    if (selected.length === 1) { return names[0]; }
+    return selected.length + ' ' + noun + ' selected';
   }
 
   function toggleArea(value, on) {
@@ -193,6 +209,7 @@
      never offers a value that would return nothing on its own. */
   function buildAreaFacet() {
     var fs = dom.areaFieldset;
+    var keepFocus = focusedValueIn(fs);
     var items = editionItems();
     var counts = {};
     items.forEach(function (it) {
@@ -202,17 +219,13 @@
     state.areas = state.areas.filter(function (slug) { return counts[slug]; });
 
     clear(fs);
-    var legend = el('legend', 'sr-only', 'Filter by area of interest');
-    fs.appendChild(legend);
+    fs.appendChild(el('legend', 'sr-only', 'Filter by area of interest'));
 
     fs.appendChild(facetRow('area', '__all__', 'All areas', items.length,
       state.areas.length === 0, true, toggleArea));
 
-    var available = Object.keys(state.data.areas).filter(function (slug) {
-      return counts[slug];
-    });
-
-    available.forEach(function (slug) {
+    Object.keys(state.data.areas).forEach(function (slug) {
+      if (!counts[slug]) { return; }
       fs.appendChild(facetRow('area', slug, areaMeta(slug).name, counts[slug],
         state.areas.indexOf(slug) !== -1, false, toggleArea));
     });
@@ -220,11 +233,19 @@
     fs.appendChild(el('p', 'facet-logic',
       'Selecting more than one area shows items in any of them.'));
 
-    setFacetCount(dom.areaCount, state.areas, available.length);
+    dom.areaSummary.textContent = summarise(
+      state.areas,
+      state.areas.map(function (s) { return areaMeta(s).name; }),
+      'All areas',
+      'areas'
+    );
+
+    restoreFocus(fs, keepFocus);
   }
 
   function buildMarketFacet() {
     var fs = dom.marketFieldset;
+    var keepFocus = focusedValueIn(fs);
     var items = editionItems();
     var counts = {};
     items.forEach(function (it) {
@@ -242,8 +263,6 @@
     fs.appendChild(facetRow('market', '__all__', 'All jurisdictions', items.length,
       state.markets.length === 0, true, toggleMarket));
 
-    var total = 0;
-
     (state.data.market_groups || []).forEach(function (group) {
       var codes = Object.keys(state.data.markets).filter(function (code) {
         var m = marketMeta(code);
@@ -255,7 +274,6 @@
       });
       fs.appendChild(el('p', 'facet-group', group));
       codes.forEach(function (code) {
-        total += 1;
         fs.appendChild(facetRow('market', code, marketMeta(code).name, counts[code],
           state.markets.indexOf(code) !== -1, false, toggleMarket));
       });
@@ -265,7 +283,20 @@
       'Selecting more than one jurisdiction shows items touching any of them. ' +
       'Source markets are not listed here.'));
 
-    setFacetCount(dom.marketCount, state.markets, total);
+    dom.marketSummary.textContent = summarise(
+      state.markets,
+      state.markets.map(function (c) { return marketMeta(c).name; }),
+      'All jurisdictions',
+      'jurisdictions'
+    );
+
+    restoreFocus(fs, keepFocus);
+  }
+
+  function closeFacets(except) {
+    [dom.areaFacet, dom.marketFacet].forEach(function (node) {
+      if (node && node !== except) { node.open = false; }
+    });
   }
 
   /* ---------- cards ---------- */
@@ -485,6 +516,7 @@
   function resetFilters() {
     state.areas = [];
     state.markets = [];
+    closeFacets(null);
     render();
   }
 
@@ -580,8 +612,9 @@
   function cacheDom() {
     [
       'editionFlag', 'editionLabel', 'publishedDate', 'editorNote', 'aiNotice',
-      'editionSelect', 'areaFacet', 'areaFieldset', 'areaCount',
-      'marketFacet', 'marketFieldset', 'marketCount',
+      'editionSelect',
+      'areaFacet', 'areaFieldset', 'areaSummary',
+      'marketFacet', 'marketFieldset', 'marketSummary',
       'resetBtn', 'exportBtn', 'exportStatus', 'count',
       'topSection', 'topHead', 'topBody', 'feedBody',
       'areaDefs', 'impactDefs', 'error'
@@ -595,10 +628,29 @@
       state.editionId = dom.editionSelect.value;
       state.areas = [];
       state.markets = [];
+      closeFacets(null);
       render();
     });
+
     dom.resetBtn.addEventListener('click', resetFilters);
     dom.exportBtn.addEventListener('click', exportCsv);
+
+    /* Only one facet panel open at a time. */
+    [dom.areaFacet, dom.marketFacet].forEach(function (node) {
+      node.addEventListener('toggle', function () {
+        if (node.open) { closeFacets(node); }
+      });
+    });
+
+    /* The control looks like a select, so dismiss it like one. */
+    document.addEventListener('click', function (evt) {
+      if (!dom.areaFacet.contains(evt.target)) { dom.areaFacet.open = false; }
+      if (!dom.marketFacet.contains(evt.target)) { dom.marketFacet.open = false; }
+    });
+
+    document.addEventListener('keydown', function (evt) {
+      if (evt.key === 'Escape') { closeFacets(null); }
+    });
   }
 
   function start(data) {
