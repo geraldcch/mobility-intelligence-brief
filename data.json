@@ -61,9 +61,9 @@
     "GCC": { "name": "Gulf Cooperation Council", "group": "Jurisdictions", "filterable": true },
     "UNECE": { "name": "UNECE", "group": "Jurisdictions", "filterable": true },
     "GLOBAL": { "name": "Global", "group": "Jurisdictions", "filterable": true },
-    "CN": { "name": "China", "group": "Source markets", "filterable": false },
-    "JP": { "name": "Japan", "group": "Source markets", "filterable": false },
-    "KR": { "name": "South Korea", "group": "Source markets", "filterable": false }
+    "CN": { "name": "China", "group": "Source markets", "filterable": true },
+    "JP": { "name": "Japan", "group": "Source markets", "filterable": true },
+    "KR": { "name": "South Korea", "group": "Source markets", "filterable": true }
   },
   "actions": {
     "unreviewed": "Unreviewed",
