@@ -9,7 +9,7 @@
     "medium": "Informs planning or revises our read of a market, but forces no decision this cycle. Registration data and directional policy signals normally sit here.",
     "low": "Context. Logged for the record."
   },
-  "filter_note": "Countries and regional jurisdictions such as the EU and GCC are filterable; source markets — China, Japan, South Korea — appear as tags only, since they are where decisions are made rather than markets we distribute into.",
+  "filter_note": "Countries, regional jurisdictions such as the EU and GCC, and source markets are all filterable. Source markets are grouped separately because they are where manufacturer decisions are made rather than markets we distribute into.",
   "areas": {
     "regulation_trade": {
       "name": "Regulation & Trade",
