@@ -4,71 +4,95 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Mobility Intelligence Brief</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<meta name="description" content="Fortnightly mobility-sector intelligence for automotive distribution across the Middle East and Europe.">
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
+<a class="skip-link" href="#main">Skip to content</a>
+
 <header class="masthead">
-  <div class="mh-row">
-    <div class="mh-title">
-      <h1 id="pubName">Mobility Intelligence Brief</h1>
-      <p class="mh-sub" id="pubSub">Fortnightly intelligence for Abdul Latif Jameel — Middle East &amp; Europe</p>
-    </div>
-    <div class="mh-ed">
-      <label for="editionSelect">Edition</label>
-      <select id="editionSelect"></select>
+  <div class="wrap masthead-inner">
+    <h1 id="pubName">Mobility Intelligence Brief</h1>
+    <p class="subtitle" id="pubSubtitle"></p>
+    <div class="masthead-meta">
+      <span class="edition-flag" id="editionFlag"></span>
+      <span class="mono" id="editionLabel"></span>
+      <span class="mono" id="publishedDate"></span>
+      <span class="mono">Middle East &amp; Europe</span>
     </div>
   </div>
-  <div class="mh-rule"></div>
-  <p class="mh-meta" id="editionMeta">Loading…</p>
-  <p class="mh-note" id="editorNote" hidden></p>
 </header>
 
-<section class="filters" aria-label="Filter the edition">
-  <div class="f-controls">
-    <div class="f-group">
-      <label for="marketSelect">Country or jurisdiction</label>
-      <select id="marketSelect"></select>
-    </div>
-    <div class="f-group">
-      <label for="areaSelect">Area of interest</label>
-      <select id="areaSelect"></select>
-    </div>
-    <div class="f-buttons">
-      <button type="button" id="clearBtn">Clear filters</button>
-      <button type="button" id="exportBtn">Export triage list</button>
-    </div>
-  </div>
-  <p class="f-note">Regional jurisdictions (EU, GCC, UNECE) are filterable alongside individual countries, because the items that matter most to a distributor are frequently not national. Source markets such as China appear as context on each item but are not coverage areas. Initial views are a first read for discussion, not a settled position — verify before acting on any of them.</p>
-</section>
+<main id="main" class="wrap">
 
-<main>
-  <p class="loaderr" id="loadError" hidden></p>
+  <p class="notice" id="error" hidden></p>
 
-  <section id="topSection" hidden>
-    <div class="s-head">
-      <h2 id="topHeading">Top items</h2>
-      <p class="s-desc">Ranked by consequence for the business. If nothing else is read, this is what is read.</p>
+  <p class="notice" id="aiNotice"></p>
+
+  <div class="editor-note" id="editorNote" hidden></div>
+
+  <section aria-label="Filters and export">
+    <div class="toolbar">
+      <div class="field">
+        <label for="editionSelect">Edition</label>
+        <select id="editionSelect"></select>
+      </div>
+      <div class="field">
+        <label for="areaSelect">Area of interest</label>
+        <select id="areaSelect"></select>
+      </div>
+      <div class="field">
+        <label for="marketSelect">Country or jurisdiction</label>
+        <select id="marketSelect"></select>
+      </div>
+      <div class="btn-row">
+        <button type="button" class="btn" id="resetBtn">Reset filters</button>
+        <button type="button" class="btn btn-primary" id="exportBtn">Export triage (CSV)</button>
+      </div>
     </div>
-    <div class="list" id="topList"></div>
+
+    <div class="status-row">
+      <p class="mono" id="count" role="status" aria-live="polite"></p>
+      <p class="export-status" id="exportStatus" role="status" aria-live="polite"></p>
+    </div>
+
+    <details class="panel">
+      <summary>How we classify items</summary>
+      <div id="areaDefs"></div>
+    </details>
+
+    <details class="panel">
+      <summary>Impact ratings</summary>
+      <div id="impactDefs"></div>
+    </details>
+
+    <details class="panel">
+      <summary>How the jurisdiction filter works</summary>
+      <div id="filterDefs"></div>
+    </details>
   </section>
 
-  <section id="feedSection">
-    <div class="s-head">
-      <h2 id="feedHeading">Full feed</h2>
-      <p class="s-desc" id="feedDesc">All items in this edition, filterable by jurisdiction and area of interest.</p>
-    </div>
-    <div class="list" id="feedList"></div>
-    <p class="empty" id="emptyState" hidden></p>
+  <section class="section" id="topSection" aria-label="Top items" hidden>
+    <div class="section-head" id="topHead"></div>
+    <div id="topBody"></div>
   </section>
+
+  <section class="section" aria-label="All items">
+    <div class="section-head">
+      <h2>All items</h2>
+      <span class="mono">Filterable feed</span>
+    </div>
+    <div id="feedBody"></div>
+  </section>
+
 </main>
 
-<footer>
-  <p><strong>How this is produced.</strong> Each edition is compiled by hand on a fortnightly cycle: items are screened against a stated inclusion rule, verified against a named primary source, and written with an explicit implication for the business. Collection could be automated; the judgment about what is relevant to this portfolio could not, which is why it isn't. Initial views are the editor's first read and should be verified before they inform a decision.</p>
-  <p class="f-small">Triage selections are stored in this browser only and are not shared between users. Use <em>Export triage list</em> to take them elsewhere.</p>
+<footer class="site-foot">
+  <div class="wrap">
+    <p>Mobility Intelligence Brief — a fortnightly screening of named public sources for developments bearing on automotive distribution in the Middle East and Europe.</p>
+    <p>Proposed actions are stored in this browser only and are not shared. Use the CSV export to move a triage list into email or a deck.</p>
+  </div>
 </footer>
 
 <script src="app.js"></script>
