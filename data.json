@@ -1,7 +1,188 @@
 {
   "publication": "Mobility Intelligence Brief",
-  "areas": {},
-  "markets": {},
-  "actions": {},
-  "editions": []
+  "subtitle": "Fortnightly intelligence for Abdul Latif Jameel — Middle East & Europe",
+  "areas": {
+    "brand_franchise": "Brand & Franchise Moves",
+    "regulation": "Regulation & Homologation",
+    "trade_localisation": "Trade, Tariffs & Localisation",
+    "product_pipeline": "Product & Powertrain Pipeline",
+    "channel_retail": "Channel, Retail & Margin Model",
+    "aftersales": "Aftersales, Parts & Ownership Economics",
+    "charging_energy": "Charging & Energy Readiness",
+    "demand_competition": "Demand, Macro & Competitive Position"
+  },
+  "market_groups": [
+    {
+      "label": "Middle East & North Africa",
+      "codes": ["SA", "AE", "KW", "QA", "OM", "BH", "TR", "EG", "MA", "DZ", "JO", "LB"]
+    },
+    {
+      "label": "Europe",
+      "codes": ["GB", "DE", "FR", "IT", "ES", "PL", "NL", "NO", "DK", "BE"]
+    },
+    {
+      "label": "Supranational",
+      "codes": ["EU", "GCC", "UNECE"]
+    },
+    {
+      "label": "Source markets",
+      "codes": ["CN", "JP", "KR", "GLOBAL"]
+    }
+  ],
+  "markets": {
+    "SA": "Saudi Arabia",
+    "AE": "United Arab Emirates",
+    "KW": "Kuwait",
+    "QA": "Qatar",
+    "OM": "Oman",
+    "BH": "Bahrain",
+    "TR": "Türkiye",
+    "EG": "Egypt",
+    "MA": "Morocco",
+    "DZ": "Algeria",
+    "JO": "Jordan",
+    "LB": "Lebanon",
+    "GB": "United Kingdom",
+    "DE": "Germany",
+    "FR": "France",
+    "IT": "Italy",
+    "ES": "Spain",
+    "PL": "Poland",
+    "NL": "Netherlands",
+    "NO": "Norway",
+    "DK": "Denmark",
+    "BE": "Belgium",
+    "EU": "European Union",
+    "GCC": "Gulf Cooperation Council",
+    "UNECE": "UNECE",
+    "CN": "China",
+    "JP": "Japan",
+    "KR": "South Korea",
+    "GLOBAL": "Global"
+  },
+  "actions": {
+    "unreviewed": "Unreviewed",
+    "no_action": "No action",
+    "monitor": "Monitor",
+    "deep_dive": "Deep dive",
+    "escalate": "Escalate"
+  },
+  "impact_criteria": {
+    "high": "Changes a decision we would otherwise take, or moves volume or gross profit in a Tier 1 market, within 12 months",
+    "medium": "Affects our economics or competitive position, but no decision is required this cycle",
+    "low": "Context; logged for the record"
+  },
+  "editions": [
+    {
+      "id": "ed-001",
+      "number": 1,
+      "start_date": "2026-06-15",
+      "end_date": "2026-06-28",
+      "published_date": "2026-06-29",
+      "label": "15–28 June 2026",
+      "editor_note": null,
+      "items": []
+    },
+    {
+      "id": "ed-002",
+      "number": 2,
+      "start_date": "2026-06-29",
+      "end_date": "2026-07-12",
+      "published_date": "2026-07-13",
+      "label": "29 June – 12 July 2026",
+      "editor_note": null,
+      "items": []
+    },
+    {
+      "id": "ed-003",
+      "number": 3,
+      "start_date": "2026-07-13",
+      "end_date": "2026-07-26",
+      "published_date": "2026-07-27",
+      "label": "13–26 July 2026",
+      "editor_note": "A Europe-weighted fortnight. Gulf coverage is thin this cycle: regional attention remains on Strait of Hormuz shipping conditions and war-risk premiums following the spring disruption, with no new in-window automotive policy or franchise developments meeting our verification threshold.",
+      "items": [
+        {
+          "id": "e3-01",
+          "headline": "EU car market up 5.7% in H1 2026 as battery-electric share reaches 20.7%",
+          "summary": "ACEA reported 5.90 million new EU car registrations in the first half of 2026, up 5.7%. Battery-electric cars took 20.7% share against 15.6% a year earlier, hybrids 37.3% and plug-in hybrids 9.8%, while combined petrol and diesel fell to 29.7%.",
+          "so_what": "Sets the powertrain mix our European franchises must supply into. Petrol and diesel losing eight points of share in a year is the number that reprices our stock and spec planning.",
+          "is_top": true,
+          "top_rank": 1,
+          "area": "demand_competition",
+          "markets": ["EU", "DE", "FR", "IT", "ES"],
+          "brands": [],
+          "impact": "high",
+          "source_name": "ACEA",
+          "source_url": "https://www.acea.auto/pc-registrations/new-car-registrations-5-7-in-h1-2026-battery-electric-20-7-market-share/",
+          "source_date": "2026-07-23",
+          "seed_action": null
+        },
+        {
+          "id": "e3-02",
+          "headline": "EU tariffs cut China-built BEV share but Chinese brands keep growing",
+          "summary": "Transport & Environment analysis found China-produced electric cars fell to 17% of the EU battery-electric market in Q1 2026 from a 22% peak, driven mainly by Tesla, BMW and Volvo reshoring output. Chinese-brand imports continued rising, and Chinese battery imports increased sharply.",
+          "so_what": "Tariffs are redirecting where cars are built, not who sells them. Chinese-brand volume in Europe keeps growing, so our European portfolio thesis holds while landed-cost assumptions shift.",
+          "is_top": true,
+          "top_rank": 2,
+          "area": "trade_localisation",
+          "markets": ["EU", "CN"],
+          "brands": ["Tesla", "BMW", "Volvo", "BYD", "MG"],
+          "impact": "high",
+          "source_name": "Transport & Environment",
+          "source_url": "https://www.transportenvironment.org/articles/are-the-ev-tariffs-working-western-carmakers-shifted-production-to-eu-but-chinese-brands-continue-to-grow-analysis",
+          "source_date": "2026-07-13",
+          "seed_action": "deep_dive"
+        },
+        {
+          "id": "e3-03",
+          "headline": "Chinese brands take a third of Europe's plug-in hybrid market as duties near",
+          "summary": "Local registration data showed Chinese brands at roughly a third of European plug-in hybrid deliveries in June, led by BYD, Chery and Geely. Reporting indicated the Commission is moving closer to duties on Chinese-built plug-in hybrids, pending member-state approval.",
+          "so_what": "The PHEV gap that made Chinese hybrids cheap in Europe is closing. If duties land on a similar formula to BEVs, our European hybrid pricing resets inside two quarters.",
+          "is_top": true,
+          "top_rank": 3,
+          "area": "trade_localisation",
+          "markets": ["EU", "CN"],
+          "brands": ["BYD", "Chery", "Geely"],
+          "impact": "high",
+          "source_name": "Carscoops",
+          "source_url": "https://www.carscoops.com/2026/07/china-phev-europe-tariffs/",
+          "source_date": "2026-07-24",
+          "seed_action": "escalate"
+        },
+        {
+          "id": "e3-04",
+          "headline": "Commission publishes Electrification Action Plan with 46% target and V2G framework",
+          "summary": "On 17 July the European Commission published its Electrification Action Plan alongside a proposed ETS review and a legislative proposal on network charges. It set an indicative 46% electrification target for 2040 and committed to regulatory sandboxes for vehicle-to-grid projects.",
+          "so_what": "Signals the direction of EU charging and grid rules our European markets will operate under, and opens a vehicle-to-grid services angle adjacent to vehicle sales.",
+          "is_top": false,
+          "top_rank": null,
+          "area": "charging_energy",
+          "markets": ["EU"],
+          "brands": [],
+          "impact": "medium",
+          "source_name": "Linklaters Sustainable Futures",
+          "source_url": "https://sustainablefutures.linklaters.com/post/102ne3z/european-commission-publishes-electrification-action-plan-to-make-europe-the-fir",
+          "source_date": "2026-07-17",
+          "seed_action": "monitor"
+        },
+        {
+          "id": "e3-05",
+          "headline": "Farizon adds SV Sport to UK electric commercial vehicle range",
+          "summary": "Farizon Auto UK, distributed by Jameel Motors, expanded its electric commercial vehicle line-up with the launch of the SV Sport, announced in London on 16 July.",
+          "so_what": "Widens our UK electric LCV offer into a fleet segment where our conversion and aftersales capability is the differentiator rather than the vehicle.",
+          "is_top": false,
+          "top_rank": null,
+          "area": "product_pipeline",
+          "markets": ["GB"],
+          "brands": ["Farizon"],
+          "impact": "low",
+          "source_name": "Jameel Motors",
+          "source_url": "https://jameelmotors.com/en/",
+          "source_date": "2026-07-16",
+          "seed_action": "no_action"
+        }
+      ]
+    }
+  ]
 }
