@@ -191,7 +191,17 @@
 
   /* ---------- cards ---------- */
 
-  function buildCard(item, showRank) {
+  /* One item can render twice (top block and feed). Keep every copy's
+     dropdown and coherence flag in step without rebuilding the page. */
+  function syncItemControls(itemId, value) {
+    var selects = document.querySelectorAll('select[data-item="' + itemId + '"]');
+    for (var i = 0; i < selects.length; i++) {
+      if (selects[i].value !== value) { selects[i].value = value; }
+      if (typeof selects[i]._syncFlag === 'function') { selects[i]._syncFlag(); }
+    }
+  }
+
+  function buildCard(item, showRank, scope) {
     var card = el('article', 'card' + (item.is_top ? ' is-top' : ''));
 
     if (showRank && item.is_top && item.top_rank) {
@@ -250,7 +260,7 @@
     foot.appendChild(src);
 
     var field = el('div', 'action-field');
-    var selectId = 'action-' + item.id;
+    var selectId = 'action-' + (scope || 'x') + '-' + item.id;
     var label = el('label', null, 'Proposed action');
     label.setAttribute('for', selectId);
     field.appendChild(label);
@@ -263,9 +273,11 @@
       select.appendChild(opt);
     });
     select.value = actionFor(item);
+    select.setAttribute('data-item', item.id);
     select.addEventListener('change', function () {
       state.actions[item.id] = select.value;
       writeStorage();
+      syncItemControls(item.id, select.value);
       renderExportState();
     });
     field.appendChild(select);
@@ -284,7 +296,7 @@
         : '';
       flag.hidden = !clash;
     }
-    select.addEventListener('change', syncFlag);
+    select._syncFlag = syncFlag;
     syncFlag();
     card.appendChild(flag);
 
@@ -342,7 +354,7 @@
     dom.topHead.appendChild(el('span', 'mono', 'Ranked by editorial judgment'));
 
     sortItems(tops).forEach(function (item) {
-      dom.topBody.appendChild(buildCard(item, true));
+      dom.topBody.appendChild(buildCard(item, true, 'top'));
     });
   }
 
@@ -380,13 +392,15 @@
     }
 
     shown.forEach(function (item) {
-      dom.feedBody.appendChild(buildCard(item, true));
+      dom.feedBody.appendChild(buildCard(item, true, 'feed'));
     });
   }
 
   function renderExportState() {
     dom.resetBtn.disabled = !filterActive();
-    dom.exportStatus.textContent = '';
+    dom.exportStatus.textContent = state.persistent
+      ? ''
+      : 'Browser storage is unavailable, so action choices will not survive a refresh.';
   }
 
   function render() {
@@ -500,7 +514,7 @@
       'editionFlag', 'editionLabel', 'publishedDate', 'editorNote', 'aiNotice',
       'editionSelect', 'areaSelect', 'marketSelect', 'resetBtn', 'exportBtn',
       'exportStatus', 'count', 'topSection', 'topHead', 'topBody', 'feedBody',
-      'areaDefs', 'impactDefs', 'filterDefs', 'error'
+      'areaDefs', 'impactDefs', 'error'
     ].forEach(function (id) {
       dom[id] = document.getElementById(id);
     });
@@ -547,11 +561,6 @@
     buildEditionSelect();
     wire();
     render();
-
-    if (!state.persistent) {
-      dom.exportStatus.textContent =
-        'Browser storage is unavailable, so action choices will not survive a refresh.';
-    }
   }
 
   document.addEventListener('DOMContentLoaded', function () {
